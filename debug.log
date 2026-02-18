@@ -1,0 +1,19 @@
+2026-02-18T16:12:00.514Z [console][error] [Fast Refresh] performing full reload because your application had an unrecoverable error
+2026-02-18T16:10:44.791Z [console][error] ./orchids-projects/purple-tortoise/src/components/Contact.tsx
+Error evaluating Node.js code
+SyntaxError: Expected corresponding JSX closing tag for <div>. (455:8)
+    [at toParseError (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\parse-error.ts:95:45)]
+    [at TypeScriptParserMixin.raise (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\tokenizer\index.ts:1507:19)]
+    [at TypeScriptParserMixin.jsxParseElementAt (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\plugins\jsx\index.ts:527:18)]
+    [at TypeScriptParserMixin.jsxParseElementAt (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\plugins\jsx\index.ts:483:34)]
+    [at TypeScriptParserMixin.jsxParseElementAt (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\plugins\jsx\index.ts:483:34)]
+    [at TypeScriptParserMixin.jsxParseElementAt (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\plugins\jsx\index.ts:483:34)]
+    [at TypeScriptParserMixin.jsxParseElement (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\plugins\jsx\index.ts:559:19)]
+    [at TypeScriptParserMixin.parseExprAtom (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\plugins\jsx\index.ts:573:21)]
+    [at TypeScriptParserMixin.parseExprSubscripts (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\parser\expression.ts:742:23)]
+    [at TypeScriptParserMixin.parseUpdate (C:\Users\adisr\orchids-projects\purple-tortoise\node_modules\@babel\parser\src\parser\expression.ts:721:21)]
+
+Import trace:
+  Server Component:
+    ./orchids-projects/purple-tortoise/src/components/Contact.tsx
+    ./orchids-projects/purple-tortoise/src/app/page.tsx
