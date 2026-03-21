@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "The 5 | Designed with Intelligence. Executed with Smartness.",
+  title: "BW | Designed with Intelligence. Executed with Smartness.",
   description:
     "We are a startup technology company delivering high-efficiency, scalable digital solutions with precision engineering and intelligent design.",
 };

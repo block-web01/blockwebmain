@@ -6,8 +6,10 @@ import Footer from "@/components/Footer";
 const TrustStatement = dynamic(() => import("@/components/TrustStatement"));
 const Services = dynamic(() => import("@/components/Services"));
 const Features = dynamic(() => import("@/components/Features"));
+const Projects = dynamic(() => import("@/components/Projects"));
 const Founders = dynamic(() => import("@/components/Founders"));
 const Contact = dynamic(() => import("@/components/Contact"));
+const Pricing = dynamic(() => import("@/components/Pricing"));
 
 export default function Home() {
   return (
@@ -18,7 +20,9 @@ export default function Home() {
         <TrustStatement />
         <Services />
         <Features />
+        <Projects />
         <Founders />
+        <Pricing />
         <Contact />
       </main>
       <Footer />

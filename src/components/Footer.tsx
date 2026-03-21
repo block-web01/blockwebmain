@@ -39,9 +39,9 @@ export default function Footer() {
           <div className="flex-shrink-0 max-w-xs">
             <div className="flex items-center gap-2 mb-3">
               <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center font-black text-white text-sm shadow-[0_0_14px_rgba(139,92,246,0.45)]">
-                5
+                BW
               </div>
-              <span className="text-lg font-extrabold text-white tracking-tight">The 5</span>
+              <span className="text-lg font-extrabold text-white tracking-tight">Block Web</span>
             </div>
             <p className="text-sm text-[#bdb7c8]/70 leading-relaxed">
               Designed with Intelligence.<br />Executed with Smartness.
@@ -76,7 +76,7 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-sm text-[#bdb7c8]/50">
-            &copy; {new Date().getFullYear()} The 5. All rights reserved.
+            &copy; {new Date().getFullYear()} Block Web. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link href="#" className="text-sm text-[#bdb7c8]/50 hover:text-[#8b5cf6] transition-colors duration-200">

@@ -8,7 +8,7 @@ const navLinks = [
   { label: "Home", href: "#home" },
   { label: "Services", href: "#services" },
   { label: "About", href: "#founders" },
-  { label: "Contact", href: "#contact" },
+  { label: "Pricing", href: "#pricing" },
 ];
 
 export default function Header() {
@@ -38,12 +38,12 @@ export default function Header() {
           <Link href="#home" className="flex items-center gap-2 group">
             <div className="relative">
               <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center font-black text-white text-sm">
-                5
+                BW
               </div>
               <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6] blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
             </div>
             <span className="text-xl font-extrabold tracking-tight text-white">
-              The 5
+              Block Web
             </span>
           </Link>
 

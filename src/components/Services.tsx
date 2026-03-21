@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Code2, Smartphone, Palette } from "lucide-react";
+import { GlowCard } from "@/components/ui/spotlight-card";
 
 const services = [
   {
@@ -58,23 +59,24 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -8, transition: { duration: 0.25 } }}
-              className="group relative rounded-[14px] border border-[rgba(124,58,237,0.12)] bg-[#0f0b12] p-8 hover:border-[rgba(124,58,237,0.3)] hover:shadow-[0_0_40px_rgba(124,58,237,0.12)] transition-all duration-300"
             >
-              {/* Glow */}
-              <div className="absolute inset-0 rounded-[14px] bg-gradient-to-b from-[rgba(124,58,237,0.06)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              <div className="relative z-10">
-                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[rgba(124,58,237,0.15)] to-[rgba(76,29,149,0.1)] border border-[rgba(124,58,237,0.15)]">
-                  <service.icon className="h-6 w-6 text-[#8b5cf6]" />
+              <GlowCard
+                glowColor="darkBlue"
+                customSize
+                className="w-full p-8 !aspect-auto min-h-[220px] [--backdrop:hsl(218_60%_4%/1)] [--backup-border:hsl(215_50%_15%/0.5)] [--lightness:55] [--saturation:80] [--bg-spot-opacity:0.08] [--border-spot-opacity:0.6] [--border-light-opacity:0.3]"
+              >
+                <div className="relative z-10 flex flex-col gap-4">
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[rgba(124,58,237,0.15)] to-[rgba(76,29,149,0.1)] border border-[rgba(124,58,237,0.15)]">
+                    <service.icon className="h-6 w-6 text-[#8b5cf6]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">
+                    {service.title}
+                  </h3>
+                  <p className="text-[#bdb7c8] leading-relaxed text-sm">
+                    {service.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">
-                  {service.title}
-                </h3>
-                <p className="text-[#bdb7c8] leading-relaxed text-sm">
-                  {service.description}
-                </p>
-              </div>
+              </GlowCard>
             </motion.div>
           ))}
         </div>

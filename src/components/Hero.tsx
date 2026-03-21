@@ -22,35 +22,12 @@ export default function Hero() {
         {/* Orb 3 */}
         <div className="nebula-orb-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.15)_0%,transparent_60%)] blur-3xl" />
 
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(124,58,237,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.3) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
         {/* Vignette */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#07030a_100%)]" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(124,58,237,0.2)] bg-[rgba(124,58,237,0.08)]"
-        >
-          <span className="h-2 w-2 rounded-full bg-[#8b5cf6] animate-pulse" />
-          <span className="text-sm font-medium text-[#bdb7c8]">
-            Startup Technology Company
-          </span>
-        </motion.div>
-
         {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -105,21 +82,6 @@ export default function Hero() {
           </motion.a>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-6 h-10 rounded-full border-2 border-[rgba(124,58,237,0.3)] flex items-start justify-center p-1.5"
-          >
-            <div className="w-1.5 h-2.5 rounded-full bg-[#8b5cf6]" />
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );
