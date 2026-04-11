@@ -1,36 +1,38 @@
 import type { NextConfig } from "next";
-import path from "node:path";
-
-// Loader path from orchids-visual-edits - use direct resolve to get the actual file
-const loaderPath = require.resolve('orchids-visual-edits/loader.js');
 
 const nextConfig: NextConfig = {
+  // ✅ Faster builds
+  swcMinify: true,
+
+  reactStrictMode: false,
+
+  // ✅ Optimize heavy libraries
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
+  },
+
+  // ✅ Image optimization (keep but restrict wildcard)
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
-      },
-      {
-        protocol: 'http',
-        hostname: '**',
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },
-  outputFileTracingRoot: path.resolve(__dirname, '../../'),
+
+  // ✅ Remove unnecessary tracing (not needed for your project)
+  // outputFileTracingRoot: ❌ removed
+
+  // ❌ REMOVE THESE (they slow build + hide real issues)
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
+
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
-  turbopack: {
-    rules: {
-      "*.{jsx,tsx}": {
-        loaders: [loaderPath]
-      }
-    }
-  }
-} as NextConfig;
+
+};
 
 export default nextConfig;

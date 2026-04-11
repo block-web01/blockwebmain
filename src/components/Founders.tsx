@@ -58,7 +58,7 @@ function ModernAvatar({ founder, size = "lg" }: { founder: Founder; size?: "lg" 
   const dim = size === "xl" ? "h-20 w-20" : "h-16 w-16";
   const iconSize = size === "xl" ? "h-9 w-9" : "h-7 w-7";
   return (
-    <div className={`relative ${dim} rounded-2xl bg-gradient-to-br ${founder.avatarGrad} flex items-center justify-center shadow-lg`}>
+    <div className={`relative ${dim} rounded-2xl bg-linear-to-br ${founder.avatarGrad} flex items-center justify-center shadow-lg`}>
       <div className="absolute inset-0 rounded-2xl ring-1 ring-white/10" />
       <div className="absolute top-1 left-2 h-3 w-6 rounded-full bg-white/20 blur-sm" />
       <Icon className={`${iconSize} text-white/90 drop-shadow-sm`} strokeWidth={1.6} />
@@ -75,7 +75,7 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="h-[320px]"
+      className="h-80"
       style={{ perspective: "1000px" }}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
@@ -104,7 +104,7 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
             </div>
             <div className="flex items-center gap-2 mb-1">
               <h3 className="text-lg font-bold text-white">{founder.name}</h3>
-              <BadgeCheck className="h-4 w-4 text-[#8b5cf6] flex-shrink-0" />
+              <BadgeCheck className="h-4 w-4 text-[#8b5cf6] shrink-0" />
             </div>
             <p className="text-sm font-medium text-[#8b5cf6] mb-3">{founder.role}</p>
             <p className="text-sm text-[#bdb7c8] leading-relaxed">{founder.tagline}</p>
@@ -129,7 +129,7 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
         >
           {/* top accent bar */}
           <div
-            className="h-[3px] w-full flex-shrink-0"
+            className="h-[3px] w-full shrink-0"
             style={{
               background: `linear-gradient(90deg, transparent, ${founder.accentColor}, transparent)`,
             }}
@@ -142,7 +142,7 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
               <div>
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <h3 className="text-base font-bold text-[#C7DDEB]">{founder.name}</h3>
-                  <BadgeCheck className="h-4 w-4 flex-shrink-0" style={{ color: founder.accentColor }} />
+                  <BadgeCheck className="h-4 w-4 shrink-0" style={{ color: founder.accentColor }} />
                 </div>
                 <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: founder.accentColor }}>
                   {founder.role}
@@ -193,7 +193,7 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
 export default function Founders() {
   return (
     <section id="founders" className="relative py-24 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
+      <div className="absolute inset-0 bg-linear-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section Header */}

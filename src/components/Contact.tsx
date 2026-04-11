@@ -134,7 +134,7 @@ function CalendarPicker({ label, selected, onSelect, afterDate }: CalendarPicker
                 className={[
                   "relative text-xs py-1.5 rounded-lg transition-all duration-150 font-medium",
                   isSelected
-                    ? "bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6] text-white shadow-[0_0_12px_rgba(124,58,237,0.5)]"
+                    ? "bg-linear-to-br from-[#8b5cf6] to-[#5b21b6] text-white shadow-[0_0_12px_rgba(124,58,237,0.5)]"
                     : isDisabled
                     ? "text-[#bdb7c8]/20 cursor-not-allowed"
                     : isToday
@@ -197,7 +197,7 @@ function TimeSlotPicker({ label, selectedDate, selectedTime, onSelect }: TimeSlo
                   className={[
                     "w-full py-2 px-3 rounded-lg text-xs font-medium transition-all duration-150 text-left",
                     selectedTime === slot
-                      ? "bg-gradient-to-r from-[#8b5cf6] to-[#5b21b6] text-white shadow-[0_0_10px_rgba(124,58,237,0.4)]"
+                      ? "bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white shadow-[0_0_10px_rgba(124,58,237,0.4)]"
                       : "bg-[#1a1525] text-[#bdb7c8] hover:bg-[rgba(124,58,237,0.15)] hover:text-white border border-[rgba(124,58,237,0.08)] hover:border-[rgba(124,58,237,0.25)]",
                   ].join(" ")}
                 >
@@ -236,7 +236,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-24 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
+      <div className="absolute inset-0 bg-linear-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.08)_0%,transparent_70%)] blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-3xl px-6">
@@ -281,7 +281,7 @@ export default function Contact() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   className="text-center py-12"
                 >
-                  <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center">
+                  <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-linear-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center">
                     <Send className="h-7 w-7 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
@@ -315,6 +315,17 @@ export default function Contact() {
                     />
                   </div>
 
+                  {/* Phone Number (FIXED) */}
+              <div>
+                <label className="block text-sm text-[#bdb7c8] mb-2">
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  placeholder="+91 98765 43210"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] text-sm"
+                />
+              </div>
                   {/* Message */}
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-[#bdb7c8] mb-2">
@@ -343,7 +354,7 @@ export default function Contact() {
                             className={[
                               "px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-150",
                               active
-                                ? "bg-gradient-to-r from-[#8b5cf6] to-[#5b21b6] text-white border-transparent shadow-[0_0_14px_rgba(124,58,237,0.35)]"
+                                ? "bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white border-transparent shadow-[0_0_14px_rgba(124,58,237,0.35)]"
                                 : "bg-[#1a1525] text-[#bdb7c8] border-[rgba(124,58,237,0.15)] hover:border-[rgba(124,58,237,0.4)] hover:text-white",
                             ].join(" ")}
                           >
@@ -436,7 +447,7 @@ export default function Contact() {
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
-                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-gradient-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-shadow duration-300 flex items-center justify-center gap-2"
+                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-shadow duration-300 flex items-center justify-center gap-2"
                   >
                     <Send className="h-4 w-4" />
                     Let&apos;s Build Together

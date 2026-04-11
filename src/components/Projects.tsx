@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Code2, Smartphone, Palette, Layout, Server } from "lucide-react";
+import { Code2, Smartphone, Palette, Layout, Server } from "lucide-react";
 import { GlowCard } from "@/components/ui/spotlight-card";
 
 const categories = [
@@ -98,7 +98,7 @@ const projects = [
 export default function Projects() {
   return (
     <section id="projects" className="relative py-24 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
+      <div className="absolute inset-0 bg-linear-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
 
       {/* Ambient glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -106,7 +106,7 @@ export default function Projects() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -125,12 +125,12 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        {/* Category legend */}
+        {/* Categories */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.5 }}
           className="flex flex-wrap justify-center gap-3 mb-12"
         >
           {categories.map((cat) => {
@@ -147,69 +147,51 @@ export default function Projects() {
           })}
         </motion.div>
 
-        {/* Project Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* UPDATED GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {projects.map((project, i) => {
             const cat = categoryMap[project.category];
             const Icon = iconMap[project.category];
+
             return (
               <motion.div
                 key={project.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
-                className={
-                  // First two Full Stack projects span 2 columns on lg
-                  i < 2 ? "lg:col-span-2" : ""
-                }
               >
                 <GlowCard
                   glowColor="darkBlue"
                   customSize
-                  className="w-full !aspect-auto [--backdrop:hsl(218_60%_4%/1)] [--backup-border:hsl(215_50%_15%/0.5)] [--lightness:55] [--saturation:80] [--bg-spot-opacity:0.08] [--border-spot-opacity:0.6] [--border-light-opacity:0.3]"
+                  className="w-full"
                 >
-                  <div className="relative z-10 flex flex-col gap-4 p-6">
-                    {/* Header row */}
-                    <div className="flex items-start justify-between gap-3">
-                      <div
-                        className={`inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border ${cat.bg} ${cat.border}`}
-                      >
+                  <div className="flex flex-col gap-4 p-6">
+                    <div className="flex items-start justify-between">
+                      <div className={`h-11 w-11 flex items-center justify-center rounded-xl border ${cat.bg} ${cat.border}`}>
                         <Icon className={`h-5 w-5 ${cat.color}`} />
                       </div>
-                      <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full border ${cat.color} ${cat.bg} ${cat.border}`}
-                      >
+                      <span className={`px-2.5 py-0.5 text-[10px] font-semibold rounded-full border ${cat.color} ${cat.bg} ${cat.border}`}>
                         {project.category}
                       </span>
                     </div>
 
-                    {/* Title */}
                     <div>
-                      <h3 className="text-lg font-bold text-white leading-tight">
-                        {project.title}
-                      </h3>
-                      <p className="mt-2 text-sm text-[#bdb7c8] leading-relaxed">
-                        {project.description}
-                      </p>
+                      <h3 className="text-lg font-bold text-white">{project.title}</h3>
+                      <p className="mt-2 text-sm text-[#bdb7c8]">{project.description}</p>
                     </div>
 
-                    {/* Divider */}
                     <div className="h-px bg-[rgba(124,58,237,0.12)]" />
 
-                    {/* Tech stack + year */}
-                    <div className="flex items-end justify-between gap-2">
+                    <div className="flex justify-between">
                       <div className="flex flex-wrap gap-1.5">
                         {project.tech.map((t) => (
-                          <span
-                            key={t}
-                            className="px-2 py-0.5 text-[10px] font-medium text-[#bdb7c8] bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.07)] rounded-md"
-                          >
+                          <span key={t} className="px-2 py-0.5 text-[10px] bg-[rgba(255,255,255,0.04)] border rounded-md">
                             {t}
                           </span>
                         ))}
                       </div>
-                      <span className="text-xs text-[#6b7280] flex-shrink-0">{project.year}</span>
+                      <span className="text-xs text-[#6b7280]">{project.year}</span>
                     </div>
                   </div>
                 </GlowCard>
@@ -219,21 +201,11 @@ export default function Projects() {
         </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-14 text-center"
-        >
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-xl border border-[rgba(124,58,237,0.3)] bg-[rgba(124,58,237,0.08)] hover:bg-[rgba(124,58,237,0.15)] hover:border-[rgba(124,58,237,0.5)] transition-all duration-300"
-          >
+        <div className="mt-14 text-center">
+          <a href="#contact" className="px-7 py-3 text-white border rounded-xl">
             Start Your Project
-            <ExternalLink className="h-4 w-4" />
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

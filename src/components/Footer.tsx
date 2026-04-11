@@ -31,34 +31,54 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-[rgba(124,58,237,0.12)] bg-[#07030a]">
-      <div className="mx-auto max-w-7xl px-6 pt-16 pb-10">
-        {/* Top row */}
+    <footer className="relative z-999 isolate overflow-hidden border-t border-white/10">
+      
+      {/* ✅ HARD BACKGROUND (kills grid visually) */}
+      <div className="absolute inset-0 bg-[#091413]" />
+
+      {/* ✅ EXTRA GRID KILLER LAYER */}
+      <div className="absolute inset-0 bg-[#091413] opacity-100" />
+
+      {/* ✨ Premium glow */}
+      <div className="absolute inset-0 pointer-events-none 
+        bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.18),transparent_60%)]" 
+      />
+
+      {/* CONTENT */}
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 pb-10">
+        
+        {/* Top */}
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
+          
           {/* Brand */}
-          <div className="flex-shrink-0 max-w-xs">
+          <div className="max-w-xs">
             <div className="flex items-center gap-2 mb-3">
-              <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center font-black text-white text-sm shadow-[0_0_14px_rgba(139,92,246,0.45)]">
+              <div className="h-9 w-9 rounded-lg bg-linear-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center font-black text-white text-sm shadow-[0_0_14px_rgba(139,92,246,0.45)]">
                 BW
               </div>
-              <span className="text-lg font-extrabold text-white tracking-tight">Block Web</span>
+              <span className="text-lg font-extrabold text-white">
+                Block Web
+              </span>
             </div>
-            <p className="text-sm text-[#bdb7c8]/70 leading-relaxed">
-              Designed with Intelligence.<br />Executed with Smartness.
+            <p className="text-sm text-white/80 leading-relaxed">
+              Designed with Intelligence.<br />
+              Executed with Smartness.
             </p>
           </div>
 
-          {/* Link columns */}
+          {/* Links */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 flex-1">
             {Object.entries(footerLinks).map(([category, links]) => (
               <div key={category}>
-                <p className="text-sm font-semibold text-white mb-5">{category}</p>
+                <p className="text-sm font-semibold text-white mb-5">
+                  {category}
+                </p>
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="text-sm text-[#bdb7c8]/60 hover:text-[#8b5cf6] transition-colors duration-200"
+                        className="text-sm text-white/70 hover:text-white transition-colors duration-200"
                       >
                         {link.label}
                       </Link>
@@ -71,18 +91,19 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="mt-14 border-t border-[rgba(124,58,237,0.1)]" />
+        <div className="mt-14 border-t border-white/10" />
 
-        {/* Bottom row */}
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-sm text-[#bdb7c8]/50">
-            &copy; {new Date().getFullYear()} Block Web. All rights reserved.
+        {/* Bottom */}
+        <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <p className="text-sm text-white/60">
+            © {new Date().getFullYear()} Block Web. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            <Link href="#" className="text-sm text-[#bdb7c8]/50 hover:text-[#8b5cf6] transition-colors duration-200">
+
+          <div className="flex gap-6">
+            <Link href="#" className="text-sm text-white/60 hover:text-white">
               Terms and Conditions
             </Link>
-            <Link href="#" className="text-sm text-[#bdb7c8]/50 hover:text-[#8b5cf6] transition-colors duration-200">
+            <Link href="#" className="text-sm text-white/60 hover:text-white">
               Privacy Policy
             </Link>
           </div>

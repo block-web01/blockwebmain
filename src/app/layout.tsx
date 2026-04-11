@@ -17,13 +17,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} antialiased`}>
-        {children}
+      <body
+        className={`${inter.variable} antialiased bg-[#07030a]`}
+      >
+        {/* 🔥 MAIN BACKGROUND WRAPPER */}
+        <div className="relative min-h-screen bg-[#07030a]">
+          {children}
+        </div>
+
         <VisualEditsMessenger />
       </body>
     </html>

@@ -8,11 +8,10 @@ interface OtpEntry {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var __otpStore: Map<string, OtpEntry> | undefined;
 }
 
-// Use a global so it persists across Next.js hot reloads in dev
+/* ✅ No eslint-disable needed */
 const store: Map<string, OtpEntry> =
   global.__otpStore ?? (global.__otpStore = new Map());
 
@@ -35,11 +34,14 @@ export type VerifyResult = "ok" | "invalid" | "expired" | "max_attempts";
 
 export function verifyOtp(email: string, otp: string): VerifyResult {
   const entry = store.get(email.toLowerCase());
+
   if (!entry) return "expired";
+
   if (Date.now() > entry.expiresAt) {
     store.delete(email.toLowerCase());
     return "expired";
   }
+
   if (entry.attempts >= MAX_ATTEMPTS) return "max_attempts";
 
   entry.attempts += 1;
