@@ -1,8 +1,10 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import User from "@/models/User";
+import { connectDB } from "@/lib/mongodb";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -26,9 +28,26 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user }) {
+      if (user?.email && user.email !== process.env.ADMIN_EMAIL && user.email !== "the5sfounder@gmail.com") {
+        try {
+          await connectDB();
+          await User.findOneAndUpdate(
+            { email: user.email },
+            { 
+              $set: { lastLogin: new Date() },
+              $push: { loginHistory: new Date() } 
+            }
+          );
+        } catch (error) {
+          console.error("Error logging sign in:", error);
+        }
+      }
+      return true;
+    },
     async jwt({ token, user }) {
-      if (user?.role) {
-        token.role = user.role;
+      if (user) {
+        token.role = (user as any).role || (user.email === "the5sfounder@gmail.com" ? "admin" : "user");
       }
       return token;
     },
@@ -41,7 +60,8 @@ const handler = NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
-});
+};
 
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

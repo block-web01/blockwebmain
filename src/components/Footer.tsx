@@ -5,7 +5,13 @@ import { useState } from "react";
 import { LegalModal } from "./LegalModal";
 import { SupportModal } from "./SupportModal";
 
-const footerLinks = {
+type FooterLink = {
+  label: string;
+  href?: string;
+  action?: string;
+};
+
+const footerLinks: Record<string, FooterLink[]> = {
   Services: [
     { label: "Web Development", href: "#services" },
     { label: "App Development", href: "#services" },

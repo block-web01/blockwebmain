@@ -16,6 +16,14 @@ const UserSchema = new mongoose.Schema(
       required: true,
       select: false,
     },
+    lastLogin: {
+      type: Date,
+      default: Date.now,
+    },
+    loginHistory: {
+      type: [Date],
+      default: [],
+    },
   },
   { timestamps: true }
 );

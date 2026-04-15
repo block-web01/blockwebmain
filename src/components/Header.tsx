@@ -5,6 +5,8 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-
 import Link from "next/link";
 import Image from "next/image";
 import AuthModal from "./AuthModal";
+import { useSession, signOut } from "next-auth/react";
+import { User, LogOut, ChevronDown } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -14,9 +16,11 @@ const navLinks = [
 ];
 
 export default function Header() {
+  const { data: session, status } = useSession();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const { scrollY } = useScroll();
 
@@ -66,15 +70,71 @@ export default function Header() {
 
             {/* Desktop CTA */}
             <div className="hidden md:flex">
-              <motion.button
-                onClick={() => setAuthOpen(true)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                className="px-6 py-2 text-sm font-semibold text-white rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] hover:brightness-110 transition-all duration-300"
-              >
-                Login
-              </motion.button>
+              {status === "loading" ? (
+                <div className="px-6 py-2 text-sm font-semibold text-[#bdb7c8]">...</div>
+              ) : session ? (
+                <div className="flex items-center gap-4 relative">
+                  {(session.user as any)?.role === "admin" && (
+                    <Link href="/admin/dashboard" className="text-sm font-medium border border-purple-500 px-4 py-1.5 rounded-full text-purple-400 hover:text-white hover:bg-purple-500 transition-all">
+                      Admin Panel
+                    </Link>
+                  )}
+                  
+                  {/* Profile Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setProfileOpen(!profileOpen)}
+                      className="flex items-center gap-2 p-1 pr-3 rounded-full bg-white/5 border border-white/10 hover:border-purple-500/50 transition-all focus:outline-none"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-white font-bold shadow-inner">
+                        {session.user?.name ? session.user.name.charAt(0).toUpperCase() : <User size={16} />}
+                      </div>
+                      <span className="text-sm font-medium text-white max-w-[100px] truncate hidden md:block">{session.user?.name || "User"}</span>
+                      <ChevronDown size={14} className={`text-[#bdb7c8] transition-transform ${profileOpen ? "rotate-180" : ""}`} />
+                    </button>
+
+                    <AnimatePresence>
+                      {profileOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute right-0 mt-3 w-64 bg-[#0b0f17]/95 backdrop-blur-xl border border-purple-500/20 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden z-[100] flex flex-col"
+                        >
+                          <div className="p-4 border-b border-white/5 bg-white/5 flex flex-col gap-1">
+                            <p className="text-sm font-semibold text-white truncate">{session.user?.name || "User"}</p>
+                            <p className="text-xs text-[#bdb7c8] truncate">{session.user?.email || "No email"}</p>
+                          </div>
+                          
+                          <div className="p-2">
+                            <button
+                              onClick={() => {
+                                setProfileOpen(false);
+                                signOut();
+                              }}
+                              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 transition-colors"
+                            >
+                              <LogOut size={16} />
+                              Logout
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              ) : (
+                <motion.button
+                  onClick={() => setAuthOpen(true)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="px-6 py-2 text-sm font-semibold text-white rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] hover:brightness-110 transition-all duration-300"
+                >
+                  Login
+                </motion.button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -116,15 +176,53 @@ export default function Header() {
                 </Link>
               ))}
 
-              <button
-                onClick={() => {
-                  setAuthOpen(true);
-                  setMobileOpen(false);
-                }}
-                className="mt-4 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] text-white font-semibold rounded-full hover:brightness-110 transition-all w-full"
-              >
-                Login
-              </button>
+              {status === "loading" ? (
+                <div className="mt-4 py-3 text-center text-[#bdb7c8]">Loading...</div>
+              ) : session ? (
+                <div className="flex flex-col gap-2 mt-2 bg-[#1a1525]/50 border border-purple-500/10 rounded-2xl p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                      {session.user?.name ? session.user.name.charAt(0).toUpperCase() : <User size={24} />}
+                    </div>
+                    <div className="flex flex-col flex-1 min-w-0">
+                      <span className="text-base font-bold text-white truncate">{session.user?.name || "User"}</span>
+                      <span className="text-xs text-[#bdb7c8] truncate mt-0.5">{session.user?.email || "No email"}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="h-px bg-white/10 w-full my-2" />
+
+                  {(session.user as any)?.role === "admin" && (
+                    <Link
+                      href="/admin/dashboard"
+                      onClick={() => setMobileOpen(false)}
+                      className="py-3 text-center text-sm tracking-wide text-purple-400 font-bold rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 transition-all w-full mb-1"
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setMobileOpen(false);
+                    }}
+                    className="flex justify-center items-center gap-2 py-3 text-sm tracking-wide text-red-400 font-bold rounded-xl border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 transition-all w-full"
+                  >
+                    <LogOut size={18} />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setAuthOpen(true);
+                    setMobileOpen(false);
+                  }}
+                  className="mt-4 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_15px_rgba(168,85,247,0.3)] text-white font-semibold rounded-full hover:brightness-110 transition-all w-full"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </motion.div>
         )}

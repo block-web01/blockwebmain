@@ -38,7 +38,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
           setError("Invalid email or password");
         } else {
           // Check if it's the admin
-          if (email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
+          if (email === "the5sfounder@gmail.com") {
             router.push("/admin/dashboard");
           } else {
             router.refresh(); // Or redirect to home
