@@ -1,5 +1,39 @@
 import type { NextConfig } from "next";
 
+// ✅ Validate required environment variables at build time
+const validateEnvVars = () => {
+  const requiredEnvs = [
+    "NEXTAUTH_URL",
+    "NEXTAUTH_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "MONGODB_URI",
+    "ADMIN_EMAIL",
+    "ADMIN_PASSWORD",
+  ];
+
+  const missing: string[] = [];
+  requiredEnvs.forEach((envVar) => {
+    if (!process.env[envVar]) {
+      missing.push(envVar);
+    }
+  });
+
+  if (missing.length > 0) {
+    console.warn(
+      `⚠️  Missing environment variables: ${missing.join(", ")}\n` +
+      `   Please set these in:\n` +
+      `   1. .env.local (for local development)\n` +
+      `   2. Vercel Dashboard → Settings → Environment Variables (for deployment)\n`
+    );
+  }
+};
+
+// Run validation at build time
+if (process.env.NODE_ENV === "production") {
+  validateEnvVars();
+}
+
 const nextConfig: NextConfig = {
 
   reactStrictMode: false,
