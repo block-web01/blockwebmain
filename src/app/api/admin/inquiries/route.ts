@@ -7,7 +7,15 @@ import { getInquiries, deleteInquiry, updateInquiryStatus } from "@/lib/jsonStor
 export async function GET() {
   try {
     const session = await getServerSession();
-    if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    // Check if user is admin (either ADMIN_EMAIL or hardcoded admin)
+    const isAdmin = session.user?.email === process.env.ADMIN_EMAIL || 
+                    session.user?.email === "the5sfounder@gmail.com";
+    
+    if (!isAdmin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -38,7 +46,15 @@ export async function GET() {
 export async function DELETE(req: Request) {
   try {
     const session = await getServerSession();
-    if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    // Check if user is admin
+    const isAdmin = session.user?.email === process.env.ADMIN_EMAIL || 
+                    session.user?.email === "the5sfounder@gmail.com";
+    
+    if (!isAdmin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -62,7 +78,15 @@ export async function DELETE(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const session = await getServerSession();
-    if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    // Check if user is admin
+    const isAdmin = session.user?.email === process.env.ADMIN_EMAIL || 
+                    session.user?.email === "the5sfounder@gmail.com";
+    
+    if (!isAdmin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
