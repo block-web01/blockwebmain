@@ -1,5 +1,6 @@
 // In-memory OTP store. Each entry expires after 10 minutes.
 // For production, replace with Redis or a database.
+import crypto from "crypto";
 
 interface OtpEntry {
   otp: string;
@@ -19,7 +20,7 @@ const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
 const MAX_ATTEMPTS = 5;
 
 export function generateOtp(): string {
-  return String(Math.floor(100000 + Math.random() * 900000));
+  return String(crypto.randomInt(100000, 1000000));
 }
 
 export function storeOtp(email: string, otp: string): void {
@@ -46,7 +47,12 @@ export function verifyOtp(email: string, otp: string): VerifyResult {
 
   entry.attempts += 1;
 
-  if (entry.otp !== otp) return "invalid";
+  const expectedBuffer = Buffer.from(entry.otp);
+  const providedBuffer = Buffer.from(String(otp));
+
+  if (expectedBuffer.length !== providedBuffer.length || !crypto.timingSafeEqual(expectedBuffer, providedBuffer)) {
+    return "invalid";
+  }
 
   store.delete(email.toLowerCase());
   return "ok";

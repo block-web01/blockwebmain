@@ -230,7 +230,7 @@ export default function Features() {
   const ActivePanel = panels[active];
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section id="features" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -250,14 +250,14 @@ export default function Features() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                transition={{ duration: 0.15, ease: "easeInOut" }}
               >
                 <ActivePanel />
               </motion.div>
             </AnimatePresence>
 
             {/* Background glow */}
-            <div className="absolute -inset-4 rounded-[20px] bg-gradient-to-r from-[rgba(124,58,237,0.1)] to-[rgba(76,29,149,0.05)] blur-2xl -z-10" />
+            <div className="absolute -inset-4 rounded-[20px] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.15)_0%,transparent_70%)] -z-10" />
           </motion.div>
 
           {/* Right: Feature cards */}
@@ -290,7 +290,16 @@ export default function Features() {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   onMouseEnter={() => setActive(i)}
-                  className={`group flex gap-5 p-5 rounded-[14px] border cursor-default transition-all duration-300 ${
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setActive(i);
+                    }
+                  }}
+                  tabIndex={0}
+                  role="tab"
+                  aria-selected={active === i}
+                  className={`group flex gap-5 p-5 rounded-[14px] border cursor-pointer transition-all duration-300 ${
                     active === i
                       ? "border-[rgba(124,58,237,0.35)] bg-[#0f0b12] shadow-[0_0_24px_rgba(124,58,237,0.1)]"
                       : "border-[rgba(124,58,237,0.1)] bg-[#0f0b12]/60 hover:border-[rgba(124,58,237,0.25)] hover:bg-[#0f0b12]"

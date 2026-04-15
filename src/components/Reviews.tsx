@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 type Review = {
@@ -95,15 +96,25 @@ export default function Reviews() {
                 key={user.id}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setActive(user)}
-                className={`cursor-pointer rounded-xl p-[2px] transition-all ${
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActive(user);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                className={`cursor-pointer rounded-xl p-0.5 transition-all ${
                   active.id === user.id
-                    ? "bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6]"
+                    ? "bg-linear-to-br from-[#8b5cf6] to-[#5b21b6]"
                     : "bg-transparent"
                 }`}
               >
-                <img
+                <Image
                   src={user.image}
                   alt={user.name}
+                  width={80}
+                  height={80}
                   className={`w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl transition-all ${
                     active.id === user.id
                       ? "opacity-100"

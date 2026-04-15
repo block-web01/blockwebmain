@@ -79,6 +79,11 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
       style={{ perspective: "1000px" }}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
+      onFocus={() => setFlipped(true)}
+      onBlur={() => setFlipped(false)}
+      tabIndex={0}
+      role="button"
+      aria-expanded={flipped}
     >
       <motion.div
         animate={{ rotateY: flipped ? 180 : 0 }}
@@ -109,7 +114,7 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
             <p className="text-sm font-medium text-[#8b5cf6] mb-3">{founder.role}</p>
             <p className="text-sm text-[#bdb7c8] leading-relaxed">{founder.tagline}</p>
             <p className="mt-auto pt-4 text-[11px] text-[#6d5e85] uppercase tracking-widest font-medium">
-              Hover to see more
+              Hover, focus, or tap to see more
             </p>
           </div>
         </div>

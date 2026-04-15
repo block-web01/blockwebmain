@@ -16,8 +16,10 @@ export async function POST(req: Request) {
       );
     }
 
+    const normalizedEmail = email.toLowerCase();
+
     // Check existing user
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (existingUser) {
       return NextResponse.json(
@@ -32,12 +34,15 @@ export async function POST(req: Request) {
     // Create user
     const user = await User.create({
       name,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
     });
 
     return NextResponse.json(
-      { message: "User registered successfully", user },
+      { 
+        message: "User registered successfully", 
+        user: { id: user._id, name: user.name, email: user.email } 
+      },
       { status: 201 }
     );
   } catch {

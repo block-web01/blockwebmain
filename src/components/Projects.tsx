@@ -5,11 +5,11 @@ import { Code2, Smartphone, Palette, Layout, Server } from "lucide-react";
 import { GlowCard } from "@/components/ui/spotlight-card";
 
 const categories = [
-  { label: "Full Stack", color: "text-[#8b5cf6]", bg: "bg-[rgba(139,92,246,0.1)]", border: "border-[rgba(139,92,246,0.25)]" },
-  { label: "Frontend", color: "text-[#06b6d4]", bg: "bg-[rgba(6,182,212,0.1)]", border: "border-[rgba(6,182,212,0.25)]" },
-  { label: "Backend", color: "text-[#10b981]", bg: "bg-[rgba(16,185,129,0.1)]", border: "border-[rgba(16,185,129,0.25)]" },
-  { label: "App Dev", color: "text-[#f59e0b]", bg: "bg-[rgba(245,158,11,0.1)]", border: "border-[rgba(245,158,11,0.25)]" },
-  { label: "UI/UX", color: "text-[#ec4899]", bg: "bg-[rgba(236,72,153,0.1)]", border: "border-[rgba(236,72,153,0.25)]" },
+  { label: "Full Stack", color: "text-[#8b5cf6]", bg: "bg-[rgba(139,92,246,0.1)]", border: "border-[rgba(139,92,246,0.25)]", shadow: "group-hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)]" },
+  { label: "Frontend", color: "text-[#06b6d4]", bg: "bg-[rgba(6,182,212,0.1)]", border: "border-[rgba(6,182,212,0.25)]", shadow: "group-hover:shadow-[0_8px_30px_rgba(6,182,212,0.15)]" },
+  { label: "Backend", color: "text-[#10b981]", bg: "bg-[rgba(16,185,129,0.1)]", border: "border-[rgba(16,185,129,0.25)]", shadow: "group-hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)]" },
+  { label: "App Dev", color: "text-[#f59e0b]", bg: "bg-[rgba(245,158,11,0.1)]", border: "border-[rgba(245,158,11,0.25)]", shadow: "group-hover:shadow-[0_8px_30px_rgba(245,158,11,0.15)]" },
+  { label: "UI/UX", color: "text-[#ec4899]", bg: "bg-[rgba(236,72,153,0.1)]", border: "border-[rgba(236,72,153,0.25)]", shadow: "group-hover:shadow-[0_8px_30px_rgba(236,72,153,0.15)]" },
 ];
 
 const categoryMap: Record<string, (typeof categories)[number]> = {
@@ -98,11 +98,11 @@ const projects = [
 export default function Projects() {
   return (
     <section id="projects" className="relative py-24 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
 
       {/* Ambient glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-[rgba(124,58,237,0.04)] rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.15)_0%,transparent_70%)] rounded-full" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -150,8 +150,8 @@ export default function Projects() {
         {/* UPDATED GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {projects.map((project, i) => {
-            const cat = categoryMap[project.category];
-            const Icon = iconMap[project.category];
+            const cat = categoryMap[project.category] || categoryMap["Full Stack"];
+            const Icon = iconMap[project.category] || iconMap["Full Stack"];
 
             return (
               <motion.div
@@ -161,11 +161,17 @@ export default function Projects() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
               >
-                <GlowCard
-                  glowColor="darkBlue"
-                  customSize
-                  className="w-full"
-                >
+                <div className={`group relative transition-all duration-500 hover:-translate-y-1.5 ${cat.shadow}`}>
+                  {/* Subtle outer blur glow tailored to category color */}
+                  <div className={`absolute -inset-1 rounded-2xl blur-lg ${cat.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10`} />
+
+                  <GlowCard
+                    glowColor="darkBlue"
+                    customSize
+                    className="w-full relative transition-all duration-300 group-hover:border-[rgba(255,255,255,0.1)]"
+                  >
+                    {/* Inner permanent soft colored border that brightens on hover */}
+                    <div className={`absolute inset-0 rounded-2xl border ${cat.border} opacity-40 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none`} />
                   <div className="flex flex-col gap-4 p-6">
                     <div className="flex items-start justify-between">
                       <div className={`h-11 w-11 flex items-center justify-center rounded-xl border ${cat.bg} ${cat.border}`}>
@@ -186,7 +192,7 @@ export default function Projects() {
                     <div className="flex justify-between">
                       <div className="flex flex-wrap gap-1.5">
                         {project.tech.map((t) => (
-                          <span key={t} className="px-2 py-0.5 text-[10px] bg-[rgba(255,255,255,0.04)] border rounded-md">
+                          <span key={t} className="px-2 py-0.5 text-[10px] bg-[rgba(255,255,255,0.04)] border border-white/10 rounded-md">
                             {t}
                           </span>
                         ))}
@@ -195,7 +201,8 @@ export default function Projects() {
                     </div>
                   </div>
                 </GlowCard>
-              </motion.div>
+              </div>
+            </motion.div>
             );
           })}
         </div>

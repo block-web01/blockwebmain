@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, ChevronLeft, ChevronRight, Clock, Calendar } from "lucide-react";
+import { Send, ChevronLeft, ChevronRight, Clock, Calendar, Loader2 } from "lucide-react";
 import { BackgroundPaths } from "@/components/ui/background-paths";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -216,6 +216,7 @@ function TimeSlotPicker({ label, selectedDate, selectedTime, onSelect }: TimeSlo
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const [date1, setDate1] = useState<Date | null>(null);
@@ -237,7 +238,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-linear-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.08)_0%,transparent_70%)] blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.15)_0%,transparent_70%)]" />
 
       <div className="relative z-10 mx-auto max-w-3xl px-6">
         {/* Header */}
@@ -279,18 +280,75 @@ export default function Contact() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="text-center py-12"
+                  className="text-center py-12 min-h-[500px] flex flex-col items-center justify-center"
                 >
                   <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-linear-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center">
                     <Send className="h-7 w-7 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-                  <p className="text-[#bdb7c8]">We&apos;ll get back to you soon.</p>
+                  <p className="text-[#bdb7c8] mb-8">We&apos;ll get back to you soon.</p>
+                  
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setSelectedService(null);
+                        setDate1(null);
+                        setDate2(null);
+                        setTime1(null);
+                        setTime2(null);
+                      }}
+                      className="px-6 py-2.5 rounded-xl bg-[rgba(124,58,237,0.12)] border border-[rgba(124,58,237,0.2)] text-white text-sm font-semibold hover:bg-[rgba(124,58,237,0.2)] transition-colors"
+                    >
+                      Send Another
+                    </button>
+                    <button
+                      onClick={() => document.getElementById("home")?.scrollIntoView({ behavior: "smooth" })}
+                      className="px-6 py-2.5 rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white text-sm font-semibold hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all"
+                    >
+                      Return Home
+                    </button>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.form
                   key="form"
-                  onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (isSubmitting) return;
+                    
+                    setIsSubmitting(true);
+                    const formData = new FormData(e.currentTarget);
+                    const data = {
+                      name: formData.get("name"),
+                      email: formData.get("email"),
+                      phone: formData.get("phone"),
+                      message: formData.get("message"),
+                      service: selectedService,
+                      slot1: date1 ? { date: date1, time: time1 } : null,
+                      slot2: date2 ? { date: date2, time: time2 } : null,
+                    };
+
+                    try {
+                      const res = await fetch("/api/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data),
+                      });
+                      if (res.ok) {
+                        setSubmitted(true);
+                        // ✅ Scroll up by 400px to perfectly center the success card and hide the footer
+                        window.scrollBy({ top: -400, behavior: "smooth" });
+                      } else {
+                        alert("Something went wrong. Please try again.");
+                      }
+                    } catch (err) {
+                      console.error(err);
+                      alert("Error submitting form.");
+                    } finally {
+                      setIsSubmitting(false);
+                    }
+                  }}
                   className="space-y-6"
                 >
                   {/* Name */}
@@ -299,8 +357,9 @@ export default function Contact() {
                       Name
                     </label>
                     <input
-                      id="name" type="text" required placeholder="Your name"
-                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm"
+                      id="name" name="name" type="text" required placeholder="Your name"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -310,32 +369,36 @@ export default function Contact() {
                       Email
                     </label>
                     <input
-                      id="email" type="email" required placeholder="your@email.com"
-                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm"
+                      id="email" name="email" type="email" required placeholder="your@email.com"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
                   {/* Phone Number (FIXED) */}
-              <div>
-                <label className="block text-sm text-[#bdb7c8] mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="text"
-                  placeholder="+91 98765 43210"
-                  className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] text-sm"
-                />
-              </div>
+                  <div>
+                    <label htmlFor="phone" className="block text-sm text-[#bdb7c8] mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      id="phone" name="phone" type="text"
+                      disabled={isSubmitting}
+                      placeholder="+91 98765 43210"
+                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                  </div>
                   {/* Message */}
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-[#bdb7c8] mb-2">
                       Message
                     </label>
                     <textarea
-                      id="message" required rows={4} placeholder="Tell us about your project..."
-                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm resize-none"
+                      id="message" name="message" required rows={4} placeholder="Tell us about your project..."
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
+
 
                   {/* Service selector — single-select */}
                   <div>
@@ -350,12 +413,14 @@ export default function Contact() {
                             key={service}
                             type="button"
                             whileTap={{ scale: 0.95 }}
+                            disabled={isSubmitting}
                             onClick={() => setSelectedService(active ? null : service)}
                             className={[
                               "px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-150",
                               active
                                 ? "bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white border-transparent shadow-[0_0_14px_rgba(124,58,237,0.35)]"
                                 : "bg-[#1a1525] text-[#bdb7c8] border-[rgba(124,58,237,0.15)] hover:border-[rgba(124,58,237,0.4)] hover:text-white",
+                              "disabled:opacity-50 disabled:cursor-not-allowed"
                             ].join(" ")}
                           >
                             {service}
@@ -445,12 +510,22 @@ export default function Contact() {
                   {/* Submit */}
                   <motion.button
                     type="submit"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-shadow duration-300 flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                    whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
+                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    <Send className="h-4 w-4" />
-                    Let&apos;s Build Together
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" />
+                        Let&apos;s Build Together
+                      </>
+                    )}
                   </motion.button>
                 </motion.form>
               )}

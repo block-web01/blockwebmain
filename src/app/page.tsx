@@ -3,20 +3,15 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 
-/* ✅ SAFE dynamic imports (NO ssr:false) */
-const TrustStatement = dynamic(() => import("@/components/TrustStatement"), {
-  loading: () => <div className="h-32" />,
-});
-
-const Services = dynamic(() => import("@/components/Services"), {
-  loading: () => <div className="h-32" />,
-});
-
-const Features = dynamic(() => import("@/components/Features"), {
-  loading: () => <div className="h-32" />,
-});
+import TrustStatement from "@/components/TrustStatement";
+import Services from "@/components/Services";
+import Features from "@/components/Features";
 
 const Projects = dynamic(() => import("@/components/Projects"), {
+  loading: () => <div className="h-32" />,
+});
+
+const ProductsSection = dynamic(() => import("@/components/ProductsSection"), {
   loading: () => <div className="h-32" />,
 });
 
@@ -42,13 +37,14 @@ export default function Home() {
       <Header />
 
       <main>
-        {/* ✅ Only Hero loads instantly */}
+        {/* ✅ Hero, TrustStatement, Services, and Features load instantly */}
         <Hero />
-
-        {/* ✅ Others load progressively */}
         <TrustStatement />
         <Services />
         <Features />
+
+        {/* ✅ Remainder load progressively */}
+        <ProductsSection />
         <Projects />
         <Founders />
         <Pricing />

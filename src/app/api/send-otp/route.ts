@@ -3,14 +3,20 @@ import nodemailer from "nodemailer";
 import { generateOtp, storeOtp } from "@/lib/otpStore";
 
 export async function POST(req: NextRequest) {
-  const { email } = await req.json();
+  try {
+    const { email } = await req.json();
 
-  if (!email || typeof email !== "string") {
-    return NextResponse.json({ error: "Invalid email" }, { status: 400 });
-  }
+    if (!email || typeof email !== "string") {
+      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+    }
 
-  const otp = generateOtp();
-  storeOtp(email, otp);
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error("Missing SMTP credentials");
+      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
+    }
+
+    const otp = generateOtp();
+    storeOtp(email, otp);
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST ?? "smtp.gmail.com",
@@ -51,4 +57,7 @@ export async function POST(req: NextRequest) {
     console.error("Email send error:", err);
     return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
   }
+} catch (err) {
+  return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+}
 }

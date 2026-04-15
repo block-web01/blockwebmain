@@ -79,6 +79,13 @@ export default function Pricing() {
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
                 whileHover={{ scale: 1.02 }}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const y = e.clientY - rect.top;
+                  e.currentTarget.style.setProperty("--x", `${x}px`);
+                  e.currentTarget.style.setProperty("--y", `${y}px`);
+                }}
                 className="relative"
               >
                 {/* Hover Glow */}
@@ -95,13 +102,6 @@ export default function Pricing() {
                 <GlowCard className="w-full h-full relative z-10">
                   <div
                     className="relative z-10 flex flex-col h-full p-8 gap-6"
-                    onMouseMove={(e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const x = e.clientX - rect.left;
-                      const y = e.clientY - rect.top;
-                      e.currentTarget.style.setProperty("--x", `${x}px`);
-                      e.currentTarget.style.setProperty("--y", `${y}px`);
-                    }}
                   >
                     {/* TOP CONTENT */}
                     <div className="flex flex-col gap-6">

@@ -15,6 +15,8 @@ export const metadata: Metadata = {
     "We are a startup technology company delivering high-efficiency, scalable digital solutions with precision engineering and intelligent design.",
 };
 
+import { Providers } from "@/components/Providers";
+
 export default function RootLayout({
   children,
 }: {
@@ -25,13 +27,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased bg-[#07030a]`}
       >
-        {/* 🔥 MAIN BACKGROUND WRAPPER */}
-        <div className="relative min-h-screen bg-[#07030a]">
-          {children}
-        </div>
+        <Providers>
+          {/* 🔥 MAIN BACKGROUND WRAPPER */}
+          <div className="relative min-h-screen bg-[#07030a]">
+            {children}
+          </div>
+        </Providers>
 
         <VisualEditsMessenger />
       </body>
     </html>
   );
-}
+}

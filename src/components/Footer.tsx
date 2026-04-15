@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { LegalModal } from "./LegalModal";
+import { SupportModal } from "./SupportModal";
 
 const footerLinks = {
   Services: [
@@ -11,27 +14,29 @@ const footerLinks = {
     { label: "Performance", href: "#features" },
   ],
   Company: [
-    { label: "About", href: "#about" },
+    { label: "About", href: "#features" },
     { label: "Founders", href: "#founders" },
     { label: "Contact", href: "#contact" },
     { label: "Careers", href: "#contact" },
-    { label: "Privacy", href: "#" },
   ],
   Resources: [
-    { label: "Help", href: "#contact" },
-    { label: "Support", href: "#contact" },
+    { label: "Support", action: "support" },
     { label: "Advertise", href: "#contact" },
   ],
   Social: [
-    { label: "Twitter", href: "#" },
-    { label: "Instagram", href: "#" },
-    { label: "LinkedIn", href: "#" },
+    { label: "Twitter", href: "https://twitter.com/the5s_Founder" },
+    { label: "Instagram", href: "https://www.instagram.com/block_web01" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/the-v-5s" },
   ],
 };
 
 export default function Footer() {
+  const [legalOpen, setLegalOpen] = useState(false);
+  const [legalTab, setLegalTab] = useState<"terms" | "privacy">("terms");
+  const [supportOpen, setSupportOpen] = useState(false);
+
   return (
-    <footer className="relative z-999 isolate overflow-hidden border-t border-white/10">
+    <footer className="relative z-[999] isolate overflow-hidden border-t border-white/10">
       
       {/* ✅ HARD BACKGROUND (kills grid visually) */}
       <div className="absolute inset-0 bg-[#091413]" />
@@ -76,12 +81,22 @@ export default function Footer() {
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-white/70 hover:text-white transition-colors duration-200"
-                      >
-                        {link.label}
-                      </Link>
+                      {link.action === "support" ? (
+                        <button
+                          onClick={() => setSupportOpen(true)}
+                          className="text-sm text-white/70 hover:text-white transition-colors duration-200"
+                        >
+                          {link.label}
+                        </button>
+                      ) : (
+                        <Link
+                          href={link.href!}
+                          target={link.href?.startsWith("http") ? "_blank" : undefined}
+                          className="text-sm text-white/70 hover:text-white transition-colors duration-200"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -100,15 +115,18 @@ export default function Footer() {
           </p>
 
           <div className="flex gap-6">
-            <Link href="#" className="text-sm text-white/60 hover:text-white">
+            <button onClick={() => { setLegalTab("terms"); setLegalOpen(true); }} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
               Terms and Conditions
-            </Link>
-            <Link href="#" className="text-sm text-white/60 hover:text-white">
+            </button>
+            <button onClick={() => { setLegalTab("privacy"); setLegalOpen(true); }} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
               Privacy Policy
-            </Link>
+            </button>
           </div>
         </div>
       </div>
+
+      <LegalModal open={legalOpen} onClose={() => setLegalOpen(false)} tab={legalTab} />
+      <SupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </footer>
   );
 }
