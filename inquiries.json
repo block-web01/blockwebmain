@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "name": "pulkit",
+    "email": "pl@gmail.com",
+    "phone": "+916367290979",
+    "message": "asdf",
+    "service": "App Development",
+    "slot1": {
+      "date": "2026-04-16T18:30:00.000Z",
+      "time": "10:00 AM"
+    },
+    "slot2": null,
+    "_id": "1776267554208",
+    "createdAt": "2026-04-15T15:39:14.208Z",
+    "status": "unread"
+  }
+]
