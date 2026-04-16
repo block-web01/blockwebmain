@@ -10,16 +10,27 @@ import Image from "next/image";
 type AuthModalProps = {
   open: boolean;
   onClose: () => void;
+  initialError?: string;
+  initialMode?: "login" | "signup";
 };
 
-export default function AuthModal({ open, onClose }: AuthModalProps) {
-  const [isLogin, setIsLogin] = useState(true);
+import { useEffect } from "react";
+
+export default function AuthModal({ open, onClose, initialError = "", initialMode = "login" }: AuthModalProps) {
+  const [isLogin, setIsLogin] = useState(initialMode === "login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(initialError);
   const router = useRouter();
+
+  useEffect(() => {
+    if (open) {
+      setIsLogin(initialMode === "login");
+      setError(initialError);
+    }
+  }, [open, initialMode, initialError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

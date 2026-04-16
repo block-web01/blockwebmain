@@ -4,9 +4,11 @@ import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import AuthModal from "./AuthModal";
 import { useSession, signOut } from "next-auth/react";
 import { User, LogOut, ChevronDown } from "lucide-react";
+import { useEffect } from "react";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -20,9 +22,24 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+  const [authError, setAuthError] = useState("");
   const [profileOpen, setProfileOpen] = useState(false);
 
   const { scrollY } = useScroll();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams && searchParams.get("error") === "needs_signup") {
+      setAuthMode("signup");
+      setAuthError("This Google account is not registered. Please sign up first.");
+      setAuthOpen(true);
+      
+      if (typeof window !== "undefined") {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  }, [searchParams]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 20);
@@ -229,7 +246,16 @@ export default function Header() {
       </AnimatePresence>
 
       {/* AUTH MODAL */}
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
+      <AuthModal 
+        open={authOpen} 
+        onClose={() => {
+          setAuthOpen(false);
+          setAuthError("");
+          setAuthMode("login");
+        }} 
+        initialMode={authMode}
+        initialError={authError}
+      />
     </>
   );
 }

@@ -35,10 +35,10 @@ interface UserData {
 }
 
 export default function AdminDashboard() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   
-  const [activeTab, setActiveTab] = useState<"inquiries" | "users">("inquiries");
+  const [activeTab, setActiveTab] = useState<"inquiries" | "users" | "meetings">("inquiries");
 
   // Inquiries State
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -54,10 +54,14 @@ export default function AdminDashboard() {
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
-      fetchInquiries();
-      fetchUsers();
+      if ((session?.user as any)?.role !== "admin") {
+        router.push("/");
+      } else {
+        fetchInquiries();
+        fetchUsers();
+      }
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
   const fetchInquiries = async () => {
     setLoading(true);
@@ -125,6 +129,10 @@ export default function AdminDashboard() {
 
   // Derived State
   const filteredInquiries = inquiries.filter((inq) => {
+    const isMeeting = Boolean(inq.slot1 || inq.slot2);
+    if (activeTab === "inquiries" && isMeeting) return false;
+    if (activeTab === "meetings" && !isMeeting) return false;
+
     const matchesFilter = filter === "all" || inq.status === filter;
     const matchesSearch = 
       inq.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -234,6 +242,17 @@ export default function AdminDashboard() {
             Inquiries
           </button>
           <button
+            onClick={() => setActiveTab("meetings")}
+            className={`flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-t-xl transition-all ${
+              activeTab === "meetings"
+                ? "bg-[rgba(124,58,237,0.1)] text-[#8b5cf6] border-b-2 border-[#8b5cf6]"
+                : "text-[#bdb7c8] hover:text-white hover:bg-white/5 border-b-2 border-transparent"
+            }`}
+          >
+            <Calendar className="w-4 h-4" />
+            Meetings
+          </button>
+          <button
             onClick={() => setActiveTab("users")}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-t-xl transition-all ${
               activeTab === "users"
@@ -249,7 +268,7 @@ export default function AdminDashboard() {
 
       {/* Tab Contents */}
       <main className="max-w-7xl mx-auto">
-        {activeTab === "inquiries" && (
+        {(activeTab === "inquiries" || activeTab === "meetings") && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
             {/* Controls */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -372,28 +391,59 @@ export default function AdminDashboard() {
 
                         {/* Actions */}
                         <div className="lg:col-span-2 flex lg:flex-col items-center justify-center gap-2">
-                          {inq.status !== 'resolved' && (
-                            <button 
-                              onClick={() => updateStatus(inq._id, 'resolved')}
-                              className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all text-xs font-bold uppercase tracking-widest"
-                            >
-                              <CheckCircle className="w-4 h-4" /> Resolve
-                            </button>
+                          {activeTab === "meetings" ? (
+                            <>
+                              {inq.status !== 'resolved' && (
+                                <button 
+                                  onClick={() => updateStatus(inq._id, 'resolved')}
+                                  className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all text-xs font-bold uppercase tracking-widest text-center"
+                                >
+                                  Meeting Completed
+                                </button>
+                              )}
+                              {inq.status === 'resolved' && (
+                                <button 
+                                  onClick={() => updateStatus(inq._id, 'read')}
+                                  className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-all text-xs font-bold uppercase tracking-widest text-center"
+                                >
+                                  Meeting Remaining
+                                </button>
+                              )}
+                              {inq.status === 'unread' && (
+                                <button 
+                                  onClick={() => updateStatus(inq._id, 'read')}
+                                  className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all text-xs font-bold uppercase tracking-widest text-center"
+                                >
+                                  Mark Read
+                                </button>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {inq.status !== 'resolved' && (
+                                <button 
+                                  onClick={() => updateStatus(inq._id, 'resolved')}
+                                  className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all text-xs font-bold uppercase tracking-widest"
+                                >
+                                  <CheckCircle className="w-4 h-4" /> Resolve
+                                </button>
+                              )}
+                              {inq.status === 'unread' && (
+                                <button 
+                                  onClick={() => updateStatus(inq._id, 'read')}
+                                  className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all text-xs font-bold uppercase tracking-widest"
+                                >
+                                  Mark Read
+                                </button>
+                              )}
+                              <button 
+                                onClick={() => deleteInquiry(inq._id)}
+                                className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all text-xs font-bold uppercase tracking-widest"
+                              >
+                                <Trash2 className="w-4 h-4" /> Delete
+                              </button>
+                            </>
                           )}
-                          {inq.status === 'unread' && (
-                            <button 
-                              onClick={() => updateStatus(inq._id, 'read')}
-                              className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all text-xs font-bold uppercase tracking-widest"
-                            >
-                              Mark Read
-                            </button>
-                          )}
-                          <button 
-                            onClick={() => deleteInquiry(inq._id)}
-                            className="flex-1 w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all text-xs font-bold uppercase tracking-widest"
-                          >
-                            <Trash2 className="w-4 h-4" /> Delete
-                          </button>
                         </div>
                       </div>
                     </motion.div>
@@ -401,7 +451,7 @@ export default function AdminDashboard() {
                 ) : (
                   <div className="py-20 text-center bg-[#0f0b12] border border-dashed border-[rgba(124,58,237,0.12)] rounded-[32px]">
                     <MessageSquare className="w-12 h-12 text-[#bdb7c8]/20 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-2">No inquiries found</h3>
+                    <h3 className="text-xl font-bold text-white mb-2">No {activeTab} found</h3>
                     <p className="text-[#bdb7c8]/60">Everything is up to date!</p>
                   </div>
                 )}
