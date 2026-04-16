@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-// import { useSearchParams } from "next/navigation";
 import AuthModal from "./AuthModal";
 import { useSession, signOut } from "next-auth/react";
 import { User, LogOut, ChevronDown } from "lucide-react";
@@ -27,7 +26,7 @@ export default function Header() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   const { scrollY } = useScroll();
-  // const searchParams = useSearchParams();
+
 
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);

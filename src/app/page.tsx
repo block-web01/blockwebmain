@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
@@ -36,7 +37,7 @@ const Contact = dynamic(() => import("@/components/Contact"), {
 
 export default function Home() {
   return (
-    <>
+    <Suspense fallback={null}>
       <Header />
 
       <main>
@@ -54,6 +55,6 @@ export default function Home() {
       </main>
 
       <Footer />
-    </>
+    </Suspense>
   );
 }
