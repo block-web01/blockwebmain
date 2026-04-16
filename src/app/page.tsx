@@ -1,8 +1,6 @@
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
-
 import TrustStatement from "@/components/TrustStatement";
 import Services from "@/components/Services";
 import Features from "@/components/Features";
@@ -39,18 +37,14 @@ const Contact = dynamic(() => import("@/components/Contact"), {
 export default function Home() {
   return (
     <>
-      <Suspense fallback={<div className="h-16" />}>
-        <Header />
-      </Suspense>
+      <Header />
 
       <main>
-        {/* ✅ Hero, TrustStatement, Services, and Features load instantly */}
         <Hero />
         <TrustStatement />
         <Services />
         <Features />
 
-        {/* ✅ Remainder load progressively */}
         <ProductsSection />
         <Projects />
         <Founders />

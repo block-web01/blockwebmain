@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import AuthModal from "./AuthModal";
 import { useSession, signOut } from "next-auth/react";
 import { User, LogOut, ChevronDown } from "lucide-react";
@@ -27,19 +27,19 @@ export default function Header() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   const { scrollY } = useScroll();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
-  useEffect(() => {
-    if (searchParams && searchParams.get("error") === "needs_signup") {
-      setAuthMode("signup");
-      setAuthError("This Google account is not registered. Please sign up first.");
-      setAuthOpen(true);
-      
-      if (typeof window !== "undefined") {
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-    }
-  }, [searchParams]);
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("error") === "needs_signup") {
+    setAuthMode("signup");
+    setAuthError("This Google account is not registered. Please sign up first.");
+    setAuthOpen(true);
+
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 20);
