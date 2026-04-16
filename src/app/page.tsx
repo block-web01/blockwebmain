@@ -1,12 +1,16 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 
 import TrustStatement from "@/components/TrustStatement";
 import Services from "@/components/Services";
 import Features from "@/components/Features";
+
+const Header = dynamic(() => import("@/components/Header"), {
+  loading: () => <div className="h-16" />,
+  ssr: false,
+});
 
 const Projects = dynamic(() => import("@/components/Projects"), {
   loading: () => <div className="h-32" />,
