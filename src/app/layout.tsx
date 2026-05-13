@@ -16,18 +16,22 @@ export const metadata: Metadata = {
 };
 
 import { Providers } from "@/components/Providers";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en" className="scroll-smooth">
       <body
         className={`${inter.variable} antialiased bg-[#07030a]`}
       >
-        <Providers>
+        <Providers session={session}>
           {/* 🔥 MAIN BACKGROUND WRAPPER */}
           <div className="relative min-h-screen bg-[#07030a]">
             {children}
