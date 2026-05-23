@@ -30,6 +30,10 @@ export default function AuthModal({ open, onClose, initialError = "", initialMod
     if (open) {
       setIsLogin(initialMode === "login");
       setError(initialError);
+      setEmail("");
+      setPassword("");
+      setName("");
+      setShowPassword(false);
     }
   }, [open, initialMode, initialError]);
 
