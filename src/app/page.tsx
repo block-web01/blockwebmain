@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import Hero from "@/components/Hero";
@@ -6,6 +7,13 @@ import Footer from "@/components/Footer";
 import TrustStatement from "@/components/TrustStatement";
 import Services from "@/components/Services";
 import Features from "@/components/Features";
+
+// ✅ Google Site Verification Meta Tag
+export const metadata: Metadata = {
+  verification: {
+    google: "DaMg67pz8cBz-ZvJD5rcnJjaHC4is-ULJ8ZT0V03rws",
+  },
+};
 
 const Projects = dynamic(() => import("@/components/Projects"), {
   loading: () => <div className="h-32" />,

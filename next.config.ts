@@ -79,6 +79,11 @@ const nextConfig: NextConfig = {
 
   productionBrowserSourceMaps: false,
 
+  // ✅ Fix turbopack root directory warning
+  turbopack: {
+    root: ".",
+  },
+
 };
 
 export default nextConfig;

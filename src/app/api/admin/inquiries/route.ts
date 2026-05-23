@@ -20,7 +20,9 @@ export async function GET() {
     // Then try to append from MongoDB if possible
     try {
       await connectDB();
-      const mongoInquiries = await Inquiry.find({}).sort({ createdAt: -1 });
+      const mongoInquiries = await Inquiry.find({})
+        .populate("userId", "name email lastLogin loginHistory")
+        .sort({ createdAt: -1 });
       // Logic to merge or uniquely add can be added if needed
       // For now, if we have mongo data, it might be more complete
       if (mongoInquiries.length > 0 && inquiries.length === 0) {
