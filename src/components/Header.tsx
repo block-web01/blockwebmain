@@ -90,7 +90,7 @@ useEffect(() => {
                 <div className="px-6 py-2 text-sm font-semibold text-[#bdb7c8]">...</div>
               ) : session ? (
                 <div className="flex items-center gap-4 relative">
-                  {(session.user as any)?.role === "admin" && (
+                  {session.user?.role === "admin" && (
                     <Link href="/admin/dashboard" className="text-sm font-medium border border-purple-500 px-4 py-1.5 rounded-full text-purple-400 hover:text-white hover:bg-purple-500 transition-all">
                       Admin Panel
                     </Link>
@@ -208,7 +208,7 @@ useEffect(() => {
                   
                   <div className="h-px bg-white/10 w-full my-2" />
 
-                  {(session.user as any)?.role === "admin" && (
+                  {session.user?.role === "admin" && (
                     <Link
                       href="/admin/dashboard"
                       onClick={() => setMobileOpen(false)}

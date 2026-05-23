@@ -8,80 +8,87 @@ import { authOptions } from "@/lib/auth";
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== "admin") {
+    if (!session || session.user?.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    let inquiries: Array<Record<string, unknown>> = [];
-    
-    // Try local JSON first (guaranteed to work)
-    inquiries = await getInquiries();
-
-    // Then try to append from MongoDB if possible
+    // Connect to database and try to fetch inquiries from MongoDB
     try {
       await connectDB();
       const mongoInquiries = await Inquiry.find({})
         .populate("userId", "name email lastLogin loginHistory")
         .sort({ createdAt: -1 });
-      // Logic to merge or uniquely add can be added if needed
-      // For now, if we have mongo data, it might be more complete
-      if (mongoInquiries.length > 0 && inquiries.length === 0) {
-        inquiries = mongoInquiries;
-      }
-    } catch {
-      console.warn("MongoDB fetch failed, using local JSON only");
-    }
 
-    return NextResponse.json(inquiries);
+      return NextResponse.json(mongoInquiries);
+    } catch (mongoErr) {
+      console.warn("MongoDB fetch failed, trying local JSON fallback:", mongoErr);
+      
+      // Fallback to local JSON if MongoDB is down
+      const inquiries = await getInquiries();
+      return NextResponse.json(inquiries);
+    }
   } catch (error: unknown) {
-    return NextResponse.json({ error: (error as Error).message || "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as Error).message || "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
 export async function DELETE(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== "admin") {
+    if (!session || session.user?.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id } = await req.json();
     
-    // Delete from JSON
-    await deleteInquiry(id);
+    // 1. Delete from MongoDB primarily
+    await connectDB();
+    await Inquiry.findByIdAndDelete(id);
 
-    // Try deleting from MongoDB
+    // 2. Delete from fallback local JSON as well
     try {
-      await connectDB();
-      await Inquiry.findByIdAndDelete(id);
-    } catch {}
+      await deleteInquiry(id);
+    } catch (jsonErr) {
+      console.warn("Fallback JSON delete failed:", jsonErr);
+    }
 
-    return NextResponse.json({ message: "Inquiry deleted" });
+    return NextResponse.json({ message: "Inquiry deleted successfully" });
   } catch (error: unknown) {
-    return NextResponse.json({ error: (error as Error).message || "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as Error).message || "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
 export async function PATCH(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== "admin") {
+    if (!session || session.user?.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id, status } = await req.json();
     
-    // Update JSON
-    await updateInquiryStatus(id, status);
+    // 1. Update MongoDB primarily
+    await connectDB();
+    await Inquiry.findByIdAndUpdate(id, { status });
 
-    // Try updating MongoDB
+    // 2. Update fallback local JSON as well
     try {
-      await connectDB();
-      await Inquiry.findByIdAndUpdate(id, { status });
-    } catch {}
+      await updateInquiryStatus(id, status);
+    } catch (jsonErr) {
+      console.warn("Fallback JSON update failed:", jsonErr);
+    }
 
-    return NextResponse.json({ message: "Inquiry updated" });
+    return NextResponse.json({ message: "Inquiry updated successfully" });
   } catch (error: unknown) {
-    return NextResponse.json({ error: (error as Error).message || "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as Error).message || "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

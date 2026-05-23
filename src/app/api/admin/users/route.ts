@@ -7,14 +7,14 @@ import { authOptions } from "@/lib/auth";
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== "admin") {
+    if (!session || session.user?.role !== "admin") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     await connectDB();
     
-    // Fetch all regular users, exclude passwords
-    const users = await User.find({ email: { $ne: "the5sfounder@gmail.com" } })
+    const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase() || "the5sfounder@gmail.com";
+    const users = await User.find({ email: { $nin: ["the5sfounder@gmail.com", adminEmail] } })
       .select('_id name email lastLogin loginHistory createdAt')
       .sort({ lastLogin: -1 });
 

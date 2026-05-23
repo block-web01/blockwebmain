@@ -120,7 +120,7 @@ export default function Services() {
             transition={{ delay: 0.1 }}
             className="text-[#9ca3af] text-center mt-6 text-lg max-w-2xl mx-auto leading-relaxed"
           >
-            We don't just build software. We craft breathtaking digital experiences, highly resilient architectures, and scalable platforms tailored for heavy user influx.
+            We don&apos;t just build software. We craft breathtaking digital experiences, highly resilient architectures, and scalable platforms tailored for heavy user influx.
           </motion.p>
         </div>
 

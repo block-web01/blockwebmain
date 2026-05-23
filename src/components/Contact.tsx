@@ -2,8 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, ChevronLeft, ChevronRight, Clock, Calendar, Loader2 } from "lucide-react";
+import { Send, ChevronLeft, ChevronRight, Clock, Calendar, Loader2, ShieldAlert, LogIn, UserPlus } from "lucide-react";
 import { BackgroundPaths } from "@/components/ui/background-paths";
+import { useSession } from "next-auth/react";
+import AuthModal from "./AuthModal";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -215,6 +217,10 @@ function TimeSlotPicker({ label, selectedDate, selectedTime, onSelect }: TimeSlo
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function Contact() {
+  const { data: session, status } = useSession();
+  const [contactAuthOpen, setContactAuthOpen] = useState(false);
+  const [contactAuthMode, setContactAuthMode] = useState<"login" | "signup">("login");
+
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
@@ -310,6 +316,55 @@ export default function Contact() {
                     </button>
                   </div>
                 </motion.div>
+              ) : status !== "authenticated" ? (
+                <motion.div
+                  key="auth-required"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="flex flex-col items-center justify-center py-16 text-center min-h-[450px]"
+                >
+                  <div className="relative mb-6">
+                    <div className="absolute inset-0 bg-[#8b5cf6]/30 rounded-full blur-xl scale-125 animate-pulse" />
+                    <div className="relative mx-auto h-20 w-20 rounded-2xl bg-gradient-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center border border-[rgba(124,58,237,0.4)] shadow-[0_0_30px_rgba(124,58,237,0.3)]">
+                      <ShieldAlert className="h-10 w-10 text-white" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-2xl font-black text-white mb-3">
+                    Authentication Required
+                  </h3>
+                  
+                  <p className="max-w-md text-sm text-[#bdb7c8] mb-8 leading-relaxed">
+                    To maintain secure records and properly link requests, you must be registered and logged in before sending an inquiry.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-sm">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setContactAuthMode("login");
+                        setContactAuthOpen(true);
+                      }}
+                      className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#8b5cf6] to-[#5b21b6] text-white font-bold hover:shadow-[0_0_25px_rgba(124,58,237,0.5)] hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <LogIn size={18} />
+                      Log In
+                    </button>
+                    
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setContactAuthMode("signup");
+                        setContactAuthOpen(true);
+                      }}
+                      className="w-full py-3.5 px-6 rounded-xl bg-[rgba(124,58,237,0.08)] border border-[rgba(124,58,237,0.2)] text-[#bdb7c8] hover:text-white hover:bg-[rgba(124,58,237,0.18)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <UserPlus size={18} />
+                      Create Account
+                    </button>
+                  </div>
+                </motion.div>
               ) : (
                 <motion.form
                   key="form"
@@ -359,7 +414,9 @@ export default function Contact() {
                     <input
                       id="name" name="name" type="text" required placeholder="Your name"
                       disabled={isSubmitting}
-                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      defaultValue={session?.user?.name || ""}
+                      readOnly={Boolean(session?.user?.name)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed read-only:opacity-60 read-only:cursor-not-allowed"
                     />
                   </div>
 
@@ -371,7 +428,9 @@ export default function Contact() {
                     <input
                       id="email" name="email" type="email" required placeholder="your@email.com"
                       disabled={isSubmitting}
-                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      defaultValue={session?.user?.email || ""}
+                      readOnly={Boolean(session?.user?.email)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#1a1525] border border-[rgba(124,58,237,0.12)] text-white placeholder:text-[#bdb7c8]/40 focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed read-only:opacity-60 read-only:cursor-not-allowed"
                     />
                   </div>
 
@@ -533,6 +592,13 @@ export default function Contact() {
           </div>
         </motion.div>
       </div>
+
+      {/* LOCAL AUTH MODAL FOR CONTACT ACTIONS */}
+      <AuthModal
+        open={contactAuthOpen}
+        onClose={() => setContactAuthOpen(false)}
+        initialMode={contactAuthMode}
+      />
     </section>
   );
 }

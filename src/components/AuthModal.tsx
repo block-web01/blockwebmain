@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { X, Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -49,11 +49,11 @@ export default function AuthModal({ open, onClose, initialError = "", initialMod
         if (result?.error) {
           setError("Invalid email or password");
         } else {
-          // Check if it's the admin
-          if (email === "the5sfounder@gmail.com") {
+          const session = await getSession();
+          if (session?.user?.role === "admin") {
             router.push("/admin/dashboard");
           } else {
-            router.refresh(); // Or redirect to home
+            router.refresh();
           }
           onClose();
         }

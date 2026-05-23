@@ -18,6 +18,15 @@ export async function POST(req: Request) {
 
     const normalizedEmail = email.toLowerCase();
 
+    // Security check: block registration using the ADMIN_EMAIL from environment variables
+    const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase() || "the5sfounder@gmail.com";
+    if (normalizedEmail === adminEmail) {
+      return NextResponse.json(
+        { message: "Registration not allowed for this email address" },
+        { status: 400 }
+      );
+    }
+
     // Check existing user
     const existingUser = await User.findOne({ email: normalizedEmail });
 
@@ -36,6 +45,7 @@ export async function POST(req: Request) {
       name,
       email: normalizedEmail,
       password: hashedPassword,
+      role: "user",
     });
 
     return NextResponse.json(
