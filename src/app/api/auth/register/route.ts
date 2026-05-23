@@ -16,6 +16,20 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!email.includes("@")) {
+      return NextResponse.json(
+        { message: "Invalid email format" },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json(
+        { message: "Password must be at least 6 characters long" },
+        { status: 400 }
+      );
+    }
+
     const normalizedEmail = email.toLowerCase();
 
     // Security check: block registration using the ADMIN_EMAIL from environment variables

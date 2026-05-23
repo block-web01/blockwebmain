@@ -18,6 +18,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+    
+    // Validate required fields
+    const { name, email, message } = body;
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: "Name, email, and message are required fields" },
+        { status: 400 }
+      );
+    }
 
     // 2. Connect to database and find the user
     await connectDB();

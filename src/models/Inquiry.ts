@@ -42,4 +42,7 @@ const InquirySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+InquirySchema.index({ userId: 1, createdAt: -1 });
+InquirySchema.index({ createdAt: -1 });
+
 export default mongoose.models.Inquiry || mongoose.model("Inquiry", InquirySchema);

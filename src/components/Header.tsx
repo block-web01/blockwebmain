@@ -5,8 +5,9 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-
 import Link from "next/link";
 import Image from "next/image";
 import AuthModal from "./AuthModal";
+import { QueryHistoryModal } from "./QueryHistoryModal";
 import { useSession, signOut } from "next-auth/react";
-import { User, LogOut, ChevronDown } from "lucide-react";
+import { User, LogOut, ChevronDown, MessageSquare } from "lucide-react";
 import { useEffect } from "react";
 
 const navLinks = [
@@ -24,6 +25,7 @@ export default function Header() {
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const [authError, setAuthError] = useState("");
   const [profileOpen, setProfileOpen] = useState(false);
+  const [queryHistoryOpen, setQueryHistoryOpen] = useState(false);
 
   const { scrollY } = useScroll();
 
@@ -123,7 +125,17 @@ useEffect(() => {
                             <p className="text-xs text-[#bdb7c8] truncate">{session.user?.email || "No email"}</p>
                           </div>
                           
-                          <div className="p-2">
+                          <div className="p-2 flex flex-col gap-1">
+                            <button
+                              onClick={() => {
+                                setProfileOpen(false);
+                                setQueryHistoryOpen(true);
+                              }}
+                              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#bdb7c8] hover:text-white hover:bg-white/5 transition-colors"
+                            >
+                              <MessageSquare size={16} className="text-[#8b5cf6]" />
+                              Query History
+                            </button>
                             <button
                               onClick={() => {
                                 setProfileOpen(false);
@@ -219,6 +231,16 @@ useEffect(() => {
                   )}
                   <button
                     onClick={() => {
+                      setQueryHistoryOpen(true);
+                      setMobileOpen(false);
+                    }}
+                    className="flex justify-center items-center gap-2 py-3 text-sm tracking-wide text-[#bdb7c8] hover:text-white font-bold rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all w-full mb-1"
+                  >
+                    <MessageSquare size={18} className="text-[#8b5cf6]" />
+                    Query History
+                  </button>
+                  <button
+                    onClick={() => {
                       signOut();
                       setMobileOpen(false);
                     }}
@@ -254,6 +276,12 @@ useEffect(() => {
         }} 
         initialMode={authMode}
         initialError={authError}
+      />
+
+      {/* QUERY HISTORY MODAL */}
+      <QueryHistoryModal 
+        open={queryHistoryOpen} 
+        onClose={() => setQueryHistoryOpen(false)} 
       />
     </>
   );
