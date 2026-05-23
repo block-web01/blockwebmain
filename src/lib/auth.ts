@@ -25,13 +25,7 @@ export const authOptions: NextAuthOptions = {
         const email = credentials.email.toLowerCase();
         const password = credentials.password;
 
-        // 1. Check Admin Credentials from Env
-        if (
-          email === process.env.ADMIN_EMAIL?.toLowerCase() &&
-          password === process.env.ADMIN_PASSWORD
-        ) {
-          return { id: "admin", name: "The 5s Founder", email: process.env.ADMIN_EMAIL, role: "admin" };
-        }
+
 
         // 2. Check Database Credentials
         await connectDB();
@@ -110,13 +104,6 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         const email = user.email?.toLowerCase();
         if (email) {
-          if (
-            email === process.env.ADMIN_EMAIL?.toLowerCase() ||
-            email === "the5sfounder@gmail.com"
-          ) {
-            token.id = "admin";
-            token.role = "admin";
-          } else {
             await connectDB();
             const dbUser = await User.findOne({ email });
             if (dbUser) {
@@ -126,7 +113,6 @@ export const authOptions: NextAuthOptions = {
               token.id = user.id;
               token.role = user.role || "user";
             }
-          }
         } else {
           token.id = user.id;
           token.role = user.role || "user";
