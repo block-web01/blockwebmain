@@ -40,6 +40,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
   const innerRef = useRef<HTMLDivElement>(null);
 
   const syncPointer = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'touch') return;
     if (!cardRef.current) return;
     
     const rect = cardRef.current.getBoundingClientRect();

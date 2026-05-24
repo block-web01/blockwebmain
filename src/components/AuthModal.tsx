@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
-import { X, Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { X, Loader2, AlertCircle, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -197,10 +197,13 @@ export default function AuthModal({ open, onClose, initialError = "", initialMod
               {/* Google */}
               <button
                 onClick={() => signIn("google")}
-                className="w-full py-3 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-white/90 transition-all text-sm"
+                className="group relative w-full py-3.5 px-6 rounded-xl bg-white text-black font-bold flex items-center justify-between hover:bg-white/95 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-300 text-sm overflow-hidden"
               >
-                <Image src="https://www.google.com/favicon.ico" alt="Google" width={16} height={16} className="w-4 h-4" />
-                Continue with Google
+                <div className="flex items-center gap-3">
+                  <Image src="https://www.google.com/favicon.ico" alt="Google" width={18} height={18} className="w-4.5 h-4.5" />
+                  <span>Continue with Google</span>
+                </div>
+                <ArrowRight className="w-4 h-4 text-black opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out" />
               </button>
 
               {/* Switch */}

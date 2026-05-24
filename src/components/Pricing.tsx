@@ -80,6 +80,7 @@ export default function Pricing() {
                 onMouseLeave={() => setHovered(null)}
                 whileHover={{ scale: 1.02 }}
                 onMouseMove={(e) => {
+                  if (!window.matchMedia("(hover: hover)").matches) return;
                   const rect = e.currentTarget.getBoundingClientRect();
                   const x = e.clientX - rect.left;
                   const y = e.clientY - rect.top;

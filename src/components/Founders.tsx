@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BadgeCheck, Layers, Code2, Palette, Zap } from "lucide-react";
+import { BadgeCheck, Layers, Code2, Zap } from "lucide-react";
 import { useState } from "react";
 
 const founders = [
@@ -38,17 +38,6 @@ const founders = [
     avatarGrad: "from-[#5b21b6] via-[#6d28d9] to-[#3b0764]",
     accentColor: "#7c3aed",
   },
-  {
-    name: "Gabbar Sharma",
-    role: "Co-Founder",
-    tagline: "Driving innovation through intelligent design.",
-    expertise: "UI/UX & Product Design",
-    focus: ["Vision", "Client Relations", "Execution"],
-    bio: "Gabbar bridges the gap between logic and beauty. His design philosophy is rooted in intelligence — creating interfaces that feel intuitive before the user even thinks.",
-    icon: Palette,
-    avatarGrad: "from-[#7c3aed] via-[#8b5cf6] to-[#5b21b6]",
-    accentColor: "#a78bfa",
-  },
 ];
 
 type Founder = (typeof founders)[0];
@@ -77,8 +66,21 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="h-80"
       style={{ perspective: "1000px" }}
-      onMouseEnter={() => setFlipped(true)}
-      onMouseLeave={() => setFlipped(false)}
+      onMouseEnter={() => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          setFlipped(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          setFlipped(false);
+        }
+      }}
+      onClick={() => {
+        if (!window.matchMedia("(hover: hover)").matches) {
+          setFlipped(!flipped);
+        }
+      }}
       onFocus={() => setFlipped(true)}
       onBlur={() => setFlipped(false)}
       tabIndex={0}
@@ -216,12 +218,12 @@ export default function Founders() {
             Meet the Founders
           </h2>
           <p className="mt-4 text-lg text-[#bdb7c8] max-w-2xl mx-auto">
-            Four minds, one mission — building the future of digital.
+            Three minds, one mission — building the future of digital.
           </p>
         </motion.div>
 
         {/* Founders Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto justify-center">
           {founders.map((founder, i) => (
             <FlipCard key={founder.name} founder={founder} index={i} />
           ))}
