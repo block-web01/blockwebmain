@@ -10,6 +10,7 @@ import { useSession, signOut } from "next-auth/react";
 import { User, LogOut, ChevronDown, MessageSquare } from "lucide-react";
 import { useEffect } from "react";
 
+
 const navLinks = [
   { label: "Home", href: "#home" },
   { label: "Services", href: "#services" },
@@ -163,6 +164,7 @@ useEffect(() => {
                   Login
                 </motion.button>
               )}
+                
             </div>
 
             {/* Mobile Menu Button */}

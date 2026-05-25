@@ -567,25 +567,14 @@ export default function Contact() {
                   )}
 
                   {/* Submit */}
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                    whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
-                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                  <a
+                    href="https://wa.me/919939580371?text=Hi%2C%20I%20have%20a%20project%20idea%20can%20we%20discuss%20about%20this%20%3F"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-all duration-300 flex items-center justify-center gap-2 glossy-btn"
                   >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-4 w-4" />
-                        Let&apos;s Build Together
-                      </>
-                    )}
-                  </motion.button>
+                    Let’s Chat
+                  </a>
                 </motion.form>
               )}
             </AnimatePresence>

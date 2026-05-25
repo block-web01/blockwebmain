@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
-import { Code, Smartphone, Palette, Layers, Zap, Briefcase, ArrowUpRight } from "lucide-react";
+import { Code, Smartphone, Palette, Layers, Zap, Briefcase } from "lucide-react";
 
 const services = [
   {
@@ -159,37 +159,21 @@ export default function Services() {
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[12px_12px] opacity-30" />
 
                 {/* Main Card Content */}
-                <div className="relative z-10 flex flex-col p-8 sm:p-10 h-full justify-between">
-                  <div>
-                    {/* Icon Container */}
-                    <div 
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border backdrop-blur-xl shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                      style={{ backgroundColor: service.bgStart, borderColor: service.border }}
-                    >
-                      <Icon className="w-8 h-8 drop-shadow-md" style={{ color: service.accent }} strokeWidth={1.5} />
-                    </div>
-
-                    <h3 className="text-2xl font-black text-white mb-4 tracking-tight group-hover:text-white transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                    <p className="text-[#a1a1aa] leading-relaxed font-medium">
-                      {service.desc}
-                    </p>
+                <div className="relative z-10 flex flex-col p-8 sm:p-10 h-full">
+                  {/* Icon Container */}
+                  <div 
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border backdrop-blur-xl shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
+                    style={{ backgroundColor: service.bgStart, borderColor: service.border }}
+                  >
+                    <Icon className="w-8 h-8 drop-shadow-md" style={{ color: service.accent }} strokeWidth={1.5} />
                   </div>
 
-                  {/* Learn more interactable base */}
-                  <div className="mt-10 overflow-hidden flex items-center">
-                    <button 
-                      className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 group-hover:gap-3"
-                      style={{ color: service.accent }}
-                      onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                    >
-                      <span className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">Explore</span>
-                      <ArrowUpRight className="w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
-                    </button>
-                    {/* Ghost bar */}
-                    <div className="ml-4 h-[1px] flex-1 bg-white/5 group-hover:bg-gradient-to-r transition-all duration-500" style={{ backgroundImage: `linear-gradient(to right, ${service.border}, transparent)` }} />
-                  </div>
+                  <h3 className="text-2xl font-black text-white mb-4 tracking-tight group-hover:text-white transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  <p className="text-[#a1a1aa] leading-relaxed font-medium">
+                    {service.desc}
+                  </p>
                 </div>
               </motion.div>
             );

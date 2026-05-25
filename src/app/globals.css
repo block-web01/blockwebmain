@@ -11,7 +11,7 @@
 
 /* ───────── ROOT ───────── */
 html {
-  scroll-behavior: smooth;
+  /* Lenis handles smooth scrolling; native scroll-behavior must be disabled to prevent conflicts */
 }
 
 :root {
@@ -81,3 +81,14 @@ html {
 nextjs-portal {
   display: none !important;
 }
+
+/* Glossy button sheen */
+.glossy-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  animation: sheen 2s infinite;
+}
+@keyframes sheen { to { transform: translateX(100%); } }

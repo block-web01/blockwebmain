@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -33,26 +34,12 @@ export default function Hero() {
           scalability, and precision.
         </p>
 
-        <div className="mt-8 flex items-center justify-center gap-4">
+        <div className="mt-8 flex items-center justify-center">
 
-          <button 
-            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-3 rounded-full bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white font-semibold 
-          shadow-[0_0_25px_rgba(124,58,237,0.35)]
-          hover:scale-105 hover:shadow-[0_0_40px_rgba(124,58,237,0.6)]
-          transition-[transform,box-shadow] duration-300">
-            Get in Touch
-          </button>
-
-          <button 
-            onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-3 rounded-full border border-[rgba(124,58,237,0.3)] text-white 
-          bg-[rgba(255,255,255,0.02)]
-          hover:bg-[rgba(124,58,237,0.1)]
-          hover:border-[#8b5cf6]
-          transition-colors duration-300">
-            View Services
-          </button>
+          <a href="https://wa.me/919939580371?text=Hi%2C%20I%20have%20a%20project%20idea%20can%20we%20discuss%20about%20this%20%3F" target="_blank" rel="noopener noreferrer" className="group px-8 py-3 rounded-full bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white font-semibold shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.85)] transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 relative overflow-hidden glossy-btn flex items-center justify-center">
+            Let’s Chat
+            <ArrowUpRight className="ml-2 h-4 w-4 transition-all duration-300 transform -translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100" />
+          </a>
 
         </div>
       </motion.div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "lenis/dist/lenis.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 
 const inter = Inter({
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 import { Providers } from "@/components/Providers";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
@@ -27,15 +29,17 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <body
         className={`${inter.variable} antialiased bg-[#07030a]`}
       >
         <Providers session={session}>
-          {/* 🔥 MAIN BACKGROUND WRAPPER */}
-          <div className="relative min-h-screen bg-[#07030a]">
-            {children}
-          </div>
+          <SmoothScrollProvider>
+            {/* 🔥 MAIN BACKGROUND WRAPPER */}
+        <div className="relative min-h-screen bg-[#07030a]">
+          {children}
+        </div>
+          </SmoothScrollProvider>
         </Providers>
 
         <VisualEditsMessenger />
