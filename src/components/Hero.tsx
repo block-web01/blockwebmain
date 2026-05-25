@@ -17,7 +17,7 @@ export default function Hero() {
         transition={{ duration: 0.6 }}
         className="relative z-10 text-center px-6 max-w-4xl"
       >
-        <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight">
+        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-tight">
           Designed with{" "}
           <span className="bg-linear-to-r from-[#8b5cf6] to-[#a78bfa] bg-clip-text text-transparent">
             Intelligence
