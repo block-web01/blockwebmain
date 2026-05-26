@@ -42,7 +42,7 @@ export default async function RootLayout({
           </SmoothScrollProvider>
         </Providers>
 
-        <VisualEditsMessenger />
+        {/* <VisualEditsMessenger /> */}
       </body>
     </html>
   );

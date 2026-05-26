@@ -1,19 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 function FloatingPaths({ position }: { position: number }) {
-  const paths = Array.from({ length: 36 }, (_, i) => ({
+  const paths = Array.from({ length: 12 }, (_, i) => ({
     id: i,
-    d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
-      380 - i * 5 * position
-    } -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${
-      152 - i * 5 * position
-    } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
-      684 - i * 5 * position
-    } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
-    width: 0.5 + i * 0.03,
+    d: `M-${380 - i * 15 * position} -${189 + i * 18}C-${
+      380 - i * 15 * position
+    } -${189 + i * 18} -${312 - i * 15 * position} ${216 - i * 18} ${
+      152 - i * 15 * position
+    } ${343 - i * 18}C${616 - i * 15 * position} ${470 - i * 18} ${
+      684 - i * 15 * position
+    } ${875 - i * 18} ${684 - i * 15 * position} ${875 - i * 18}`,
+    width: 0.5 + i * 0.1,
   }));
 
   return (
@@ -30,16 +29,17 @@ function FloatingPaths({ position }: { position: number }) {
             d={path.d}
             stroke="url(#pathGrad)"
             strokeWidth={path.width}
-            strokeOpacity={0.08 + path.id * 0.015}
+            strokeOpacity={0.08 + path.id * 0.045}
             initial={{ pathLength: 0.3, opacity: 0.4 }}
             whileInView={{
               pathLength: 1,
               opacity: [0.2, 0.5, 0.2],
               pathOffset: [0, 1, 0],
             }}
-            viewport={{ once: false, margin: "200px" }}
+            viewport={{ once: true, margin: "200px" }}
+            style={{ willChange: "transform, stroke-dashoffset, opacity" }}
             transition={{
-              duration: 20 + (path.id % 7) * 3,
+              duration: 20 + (path.id % 4) * 5,
               repeat: Number.POSITIVE_INFINITY,
               ease: "linear",
             }}
@@ -58,21 +58,11 @@ function FloatingPaths({ position }: { position: number }) {
 
 /** Drop this inside any relatively-positioned container to add animated purple path lines in the background. */
 export function BackgroundPaths() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  if (isMobile) return null;
-
   return (
-    <>
+    <div className="hidden md:block absolute inset-0 pointer-events-none">
       <FloatingPaths position={1} />
       <FloatingPaths position={-1} />
-    </>
+    </div>
   );
 }
+

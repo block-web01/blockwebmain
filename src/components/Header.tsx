@@ -158,13 +158,15 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Link
-              href="#contact"
+            <a
+              href="https://wa.me/919939580371?text=Hi%2C%20I%20have%20a%20project%20idea%20can%20we%20discuss%20about%20this%20%3F"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-purple-600 hover:bg-purple-500 border border-purple-500/30 rounded-full transition-all duration-300 shadow-[0_4px_20px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.45)] hover:-translate-y-0.5"
             >
               <PhoneCall size={14} />
               Get on Call
-            </Link>
+            </a>
 
             {status === "loading" ? (
               <div className="px-4 py-2 text-sm font-semibold text-slate-400">...</div>
@@ -385,14 +387,16 @@ export default function Header() {
               <div className="h-px bg-white/5 my-2" />
 
               <div className="flex flex-col gap-3">
-                <Link
-                  href="#contact"
+                <a
+                  href="https://wa.me/919939580371?text=Hi%2C%20I%20have%20a%20project%20idea%20can%20we%20discuss%20about%20this%20%3F"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center gap-2 py-3 text-base font-bold text-white bg-purple-600 hover:bg-purple-500 rounded-xl transition-all"
                 >
                   <PhoneCall size={16} />
                   Get on Call
-                </Link>
+                </a>
 
                 {status === "loading" ? (
                   <div className="py-2 text-center text-slate-400">Loading...</div>

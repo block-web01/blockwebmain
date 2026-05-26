@@ -104,6 +104,7 @@ export default function Reviews() {
                 }}
                 tabIndex={0}
                 role="button"
+                style={{ willChange: "transform" }}
                 className={`cursor-pointer rounded-xl p-0.5 transition-all ${
                   active.id === user.id
                     ? "bg-linear-to-br from-[#8b5cf6] to-[#5b21b6]"
@@ -115,6 +116,7 @@ export default function Reviews() {
                   alt={user.name}
                   width={80}
                   height={80}
+                  loading="lazy"
                   className={`w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl transition-all ${
                     active.id === user.id
                       ? "opacity-100"
@@ -130,6 +132,7 @@ export default function Reviews() {
             key={active.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            style={{ willChange: "transform, opacity" }}
             className="w-full md:flex-1 bg-[#140d1f] border border-[rgba(124,58,237,0.2)] rounded-2xl p-5 sm:p-6 shadow-[0_0_40px_rgba(124,58,237,0.2)]"
           >
             {/* Name */}

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, ChevronLeft, ChevronRight, Clock, Calendar, Loader2, ShieldAlert, LogIn, UserPlus } from "lucide-react";
+import { Send, ChevronLeft, ChevronRight, Clock, Calendar, Loader2, ShieldAlert, LogIn, UserPlus, ArrowUpRight } from "lucide-react";
 import { BackgroundPaths } from "@/components/ui/background-paths";
 import { useSession } from "next-auth/react";
 import AuthModal from "./AuthModal";
@@ -571,9 +571,10 @@ export default function Contact() {
                     href="https://wa.me/919939580371?text=Hi%2C%20I%20have%20a%20project%20idea%20can%20we%20discuss%20about%20this%20%3F"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-all duration-300 flex items-center justify-center gap-2 glossy-btn"
+                    className="w-full py-4 text-base font-semibold text-white rounded-xl bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] transition-all duration-300 flex items-center justify-center gap-2 group sarvaya-btn"
                   >
                     Let’s Chat
+                    <ArrowUpRight className="h-5 w-5 transition-transform duration-300 transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </a>
                 </motion.form>
               )}

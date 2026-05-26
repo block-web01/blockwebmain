@@ -234,34 +234,35 @@ export default function Features() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
           {/* Left: Animated Panel */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
-            className="relative"
+            transition={{ duration: 0.8 }}
+            className="relative w-full"
           >
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.15, ease: "easeInOut" }}
+                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: -8 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                style={{ willChange: "transform, opacity" }}
               >
                 <ActivePanel />
               </motion.div>
             </AnimatePresence>
 
             {/* Background glow */}
-            <div className="absolute -inset-4 rounded-[20px] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.15)_0%,transparent_70%)] -z-10" />
+            <div className="absolute -inset-4 rounded-[20px] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.15)_0%,transparent_70%)] -z-10 animate-pulse duration-[8000ms]" />
           </motion.div>
 
           {/* Right: Feature cards */}
-          <div>
+          <div className="lg:pt-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -303,16 +304,27 @@ export default function Features() {
                   tabIndex={0}
                   role="tab"
                   aria-selected={active === i}
-                  className={`group flex gap-5 p-5 rounded-[14px] border cursor-pointer transition-all duration-300 ${
-                    active === i
-                      ? "border-[rgba(124,58,237,0.35)] bg-[#0f0b12] shadow-[0_0_24px_rgba(124,58,237,0.1)]"
-                      : "border-[rgba(124,58,237,0.1)] bg-[#0f0b12]/60 hover:border-[rgba(124,58,237,0.25)] hover:bg-[#0f0b12]"
-                  }`}
+                  className="group relative flex gap-5 p-5 rounded-[14px] cursor-pointer transition-all duration-300 overflow-hidden"
                 >
+                  {/* Sliding layout background */}
+                  {active === i && (
+                    <motion.div
+                      layoutId="activeFeatureBg"
+                      className="absolute inset-0 rounded-[14px] border border-[rgba(124,58,237,0.35)] bg-[#0f0b12] shadow-[0_0_24px_rgba(124,58,237,0.1)] -z-10"
+                      transition={{ type: "spring", stiffness: 220, damping: 25 }}
+                      style={{ willChange: "transform, opacity" }}
+                    />
+                  )}
+
+                  {/* Static background when not active */}
+                  {active !== i && (
+                    <div className="absolute inset-0 rounded-[14px] border border-[rgba(124,58,237,0.08)] bg-[#0f0b12]/40 -z-10 transition-colors duration-300 group-hover:border-[rgba(124,58,237,0.22)]" />
+                  )}
+
                   <div className={`shrink-0 h-12 w-12 rounded-xl border flex items-center justify-center transition-all duration-300 ${
                     active === i
                       ? "bg-gradient-to-br from-[rgba(124,58,237,0.25)] to-[rgba(76,29,149,0.15)] border-[rgba(124,58,237,0.3)]"
-                      : "bg-gradient-to-br from-[rgba(124,58,237,0.15)] to-[rgba(76,29,149,0.1)] border-[rgba(124,58,237,0.15)]"
+                      : "bg-gradient-to-br from-[rgba(124,58,237,0.15)] to-[rgba(76,29,149,0.1)] border-[rgba(124,58,237,0.15)] group-hover:border-[rgba(124,58,237,0.25)]"
                   }`}>
                     <feature.icon className={`h-5 w-5 transition-colors duration-300 ${active === i ? "text-[#a78bfa]" : "text-[#8b5cf6]"}`} />
                   </div>
