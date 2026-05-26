@@ -92,3 +92,56 @@ nextjs-portal {
   animation: sheen 2s infinite;
 }
 @keyframes sheen { to { transform: translateX(100%); } }
+
+/* ───────── SARVAYA NAV STYLES ───────── */
+:root {
+  --nav-accent: #a855f7;
+  --nav-accent-hover: #c084fc;
+}
+
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--nav-accent);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link-underline:hover::after {
+  width: 100%;
+}
+
+/* Custom dropdown behavior on hover */
+.desktop-dropdown {
+  position: relative;
+}
+
+.desktop-dropdown-menu {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-8px);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.desktop-dropdown:hover .desktop-dropdown-menu,
+.desktop-dropdown.open .desktop-dropdown-menu {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+
+.desktop-dropdown:hover .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+/* Custom Hamburger menu transitions */
+.hamburger-line {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
