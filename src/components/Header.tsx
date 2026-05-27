@@ -76,12 +76,6 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link
-              href="#home"
-              className="text-sm font-medium text-slate-300 hover:text-white nav-link-underline transition-colors py-1"
-            >
-              Home
-            </Link>
 
             {/* Services Dropdown */}
             <div className="desktop-dropdown py-1">
@@ -272,13 +266,6 @@ export default function Header() {
             className="fixed top-[5.5rem] left-4 right-4 z-40 md:hidden rounded-3xl bg-[#0b0f17]/95 backdrop-blur-2xl border border-purple-500/15 shadow-[0_12px_45px_rgba(0,0,0,0.8)] overflow-hidden p-6 max-h-[80vh] overflow-y-auto"
           >
             <div className="flex flex-col gap-5 mt-2">
-              <Link
-                href="#home"
-                className="text-lg font-bold text-slate-100 hover:text-purple-400 transition-colors py-1"
-                onClick={() => setMobileOpen(false)}
-              >
-                Home
-              </Link>
 
               {/* Collapsible Mobile Services */}
               <div className="flex flex-col">
