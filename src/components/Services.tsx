@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import { Code, Smartphone, Palette, Layers, Zap, Briefcase } from "lucide-react";
 
@@ -68,6 +68,7 @@ interface ServiceCardProps {
 
 function ServiceCard({ service, cardVariants }: ServiceCardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
   const { Icon } = service;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -93,6 +94,7 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
 
   const handleMouseEnter = () => {
     if (!window.matchMedia("(hover: hover)").matches) return;
+    setHovered(true);
     if (!containerRef.current) return;
     containerRef.current.style.setProperty("--glow-opacity", "1");
     containerRef.current.style.setProperty("--scale", "1.02");
@@ -100,6 +102,7 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
 
   const handleMouseLeave = () => {
     if (!window.matchMedia("(hover: hover)").matches) return;
+    setHovered(false);
     if (!containerRef.current) return;
     const card = containerRef.current;
     card.style.setProperty("--glow-opacity", "0");
@@ -117,7 +120,9 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
       variants={cardVariants}
       className="group relative p-[1.5px] rounded-[1.8rem] sm:rounded-[2.5rem] bg-white/5 overflow-hidden transition-all duration-300 ease-out"
       style={{
-        transform: "perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--scale, 1), var(--scale, 1), var(--scale, 1))",
+        transform: hovered 
+          ? "perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--scale, 1.02), var(--scale, 1.02), var(--scale, 1.02))"
+          : "none",
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",
       }}
@@ -218,8 +223,15 @@ export default function Services() {
   };
 
   const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 15 } }
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.5, 
+        ease: "easeOut"
+      } 
+    }
   };
 
   return (
