@@ -87,7 +87,7 @@ export default function Reviews() {
         </p>
 
         {/* Layout */}
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14 mt-12">
 
           {/* 👤 Avatar Grid */}
           <div className="grid grid-cols-3 sm:grid-cols-3 gap-3 sm:gap-4">

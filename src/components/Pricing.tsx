@@ -76,8 +76,16 @@ export default function Pricing() {
             return (
               <motion.div
                 key={plan.name}
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(null)}
+                onMouseEnter={() => {
+                  if (window.matchMedia("(hover: hover)").matches) {
+                    setHovered(i);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (window.matchMedia("(hover: hover)").matches) {
+                    setHovered(null);
+                  }
+                }}
                 whileHover={{ scale: 1.02 }}
                 onMouseMove={(e) => {
                   if (!window.matchMedia("(hover: hover)").matches) return;

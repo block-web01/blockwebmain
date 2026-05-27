@@ -71,6 +71,7 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
   const { Icon } = service;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     
@@ -91,12 +92,14 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
   };
 
   const handleMouseEnter = () => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
     if (!containerRef.current) return;
     containerRef.current.style.setProperty("--glow-opacity", "1");
     containerRef.current.style.setProperty("--scale", "1.02");
   };
 
   const handleMouseLeave = () => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
     if (!containerRef.current) return;
     const card = containerRef.current;
     card.style.setProperty("--glow-opacity", "0");

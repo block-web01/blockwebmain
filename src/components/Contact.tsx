@@ -190,7 +190,7 @@ function TimeSlotPicker({ label, selectedDate, selectedTime, onSelect }: TimeSlo
             <p className="text-[11px] text-[#bdb7c8]/60 mb-3 text-center">
               {formatDate(selectedDate)}
             </p>
-            <div className="grid grid-cols-1 gap-1.5">
+            <div className="grid grid-cols-3 sm:grid-cols-1 gap-1.5">
               {TIME_SLOTS.map(slot => (
                 <button
                   key={slot}
@@ -507,7 +507,7 @@ export default function Contact() {
                       <span className="text-[#8b5cf6] font-bold">Slot 1</span>
                       <span className="ml-2 text-[#bdb7c8]/50 text-xs">Pick your preferred date &amp; time</span>
                     </p>
-                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col sm:flex-row gap-4 items-start">
                       <CalendarPicker
                         label="Date 1"
                         selected={date1}
@@ -528,7 +528,7 @@ export default function Contact() {
                       <span className="text-[#8b5cf6] font-bold">Slot 2</span>
                       <span className="ml-2 text-[#bdb7c8]/50 text-xs">Pick an alternative date &amp; time</span>
                     </p>
-                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col sm:flex-row gap-4 items-start">
                       <CalendarPicker
                         label="Date 2"
                         selected={date2}

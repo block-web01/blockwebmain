@@ -14,12 +14,12 @@ export default function TrustStatement() {
           transition={{ duration: 0.6 }}
           className="inline-flex items-center gap-3"
         >
-          <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#7c3aed]" />
-          <p className="text-xl md:text-2xl font-semibold text-[#bdb7c8]">
+          <div className="hidden sm:block h-px w-12 bg-gradient-to-r from-transparent to-[#7c3aed]" />
+          <p className="text-lg sm:text-xl md:text-2xl font-semibold text-[#bdb7c8]">
             High-efficiency solutions built by{" "}
             <span className="text-white">passionate founders.</span>
           </p>
-          <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#7c3aed]" />
+          <div className="hidden sm:block h-px w-12 bg-gradient-to-l from-transparent to-[#7c3aed]" />
         </motion.div>
       </div>
     </section>

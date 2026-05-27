@@ -355,6 +355,7 @@ export default function Features() {
                       setActive(i);
                     }
                   }}
+                  onClick={() => setActive(i)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();

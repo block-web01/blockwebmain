@@ -341,7 +341,11 @@ export default function Projects() {
             return (
               <button
                 key={cat.label}
-                onMouseEnter={() => handleCategoryHover(cat.label)}
+                onMouseEnter={() => {
+                  if (window.matchMedia("(hover: hover)").matches) {
+                    handleCategoryHover(cat.label);
+                  }
+                }}
                 onClick={() => handleCategoryHover(cat.label)}
                 className={`px-6 py-2.5 rounded-full border text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                   isActive
