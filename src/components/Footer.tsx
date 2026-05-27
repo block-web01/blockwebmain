@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { LegalModal } from "./LegalModal";
 import { SupportModal } from "./SupportModal";
@@ -15,24 +16,24 @@ const footerLinks: Record<string, FooterLink[]> = {
   Services: [
     { label: "Web Development", href: "#services" },
     { label: "App Development", href: "#services" },
-    { label: "UI/UX Development", href: "#services" },
+    { label: "UI/UX Design", href: "#services" },
     { label: "Architecture", href: "#features" },
     { label: "Performance", href: "#features" },
   ],
   Company: [
-    { label: "About", href: "#features" },
-    { label: "Founders", href: "#founders" },
+    { label: "About Us", href: "#features" },
+    { label: "Our Team", href: "#founders" },
     { label: "Contact", href: "#contact" },
-    { label: "Careers", href: "#contact" },
   ],
   Resources: [
-    { label: "Support", action: "support" },
-    { label: "Advertise", href: "#contact" },
+    { label: "Support Portal", action: "support" },
+    { label: "Terms of Service", action: "terms" },
+    { label: "Privacy Policy", action: "privacy" },
   ],
   Social: [
-    { label: "Twitter", href: "https://twitter.com/the5s_Founder" },
-    { label: "Instagram", href: "https://www.instagram.com/block_web01" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/the-v-5s" },
+    { label: "Instagram", href: "https://www.instagram.com/block_web01" },
+    { label: "Twitter / X", href: "https://twitter.com/the5s_Founder" },
   ],
 };
 
@@ -42,17 +43,17 @@ export default function Footer() {
   const [supportOpen, setSupportOpen] = useState(false);
 
   return (
-    <footer className="relative z-[999] isolate overflow-hidden border-t border-white/10">
+    <footer className="relative z-[999] isolate overflow-hidden border-t border-purple-500/10">
       
-      {/* ✅ HARD BACKGROUND (kills grid visually) */}
-      <div className="absolute inset-0 bg-[#091413]" />
+      {/* Semi-transparent dark background that lets the global background grid show through gently */}
+      <div className="absolute inset-0 bg-[#07040d]/90 backdrop-blur-xl" />
 
-      {/* ✅ EXTRA GRID KILLER LAYER */}
-      <div className="absolute inset-0 bg-[#091413] opacity-100" />
+      {/* Dynamic top edge glow line */}
+      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#8b5cf6]/30 to-transparent" />
 
-      {/* ✨ Premium glow */}
-      <div className="absolute inset-0 pointer-events-none 
-        bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.18),transparent_60%)]" 
+      {/* Premium top radial glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] pointer-events-none 
+        bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.12),transparent_70%)]" 
       />
 
       {/* CONTENT */}
@@ -63,15 +64,21 @@ export default function Footer() {
           
           {/* Brand */}
           <div className="max-w-xs">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="h-9 w-9 rounded-lg bg-linear-to-br from-[#8b5cf6] to-[#5b21b6] flex items-center justify-center font-black text-white text-sm shadow-[0_0_14px_rgba(139,92,246,0.45)]">
-                BW
+            <div className="flex items-center gap-3 mb-4">
+              <div className="relative overflow-hidden rounded-full h-9 w-9">
+                <Image
+                  src="/logo.png"
+                  alt="Block Web Logo"
+                  width={36}
+                  height={36}
+                  className="h-full w-full rounded-full object-cover"
+                />
               </div>
-              <span className="text-lg font-extrabold text-white">
+              <span className="text-lg font-extrabold text-white tracking-tight">
                 Block Web
               </span>
             </div>
-            <p className="text-sm text-white/80 leading-relaxed">
+            <p className="text-sm text-[#a1a1aa] leading-relaxed font-medium">
               Designed with Intelligence.<br />
               Executed with Smartness.
             </p>
@@ -81,7 +88,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 flex-1">
             {Object.entries(footerLinks).map(([category, links]) => (
               <div key={category}>
-                <p className="text-sm font-semibold text-white mb-5">
+                <p className="text-sm font-semibold text-white mb-5 tracking-wide">
                   {category}
                 </p>
                 <ul className="space-y-3">
@@ -90,7 +97,21 @@ export default function Footer() {
                       {link.action === "support" ? (
                         <button
                           onClick={() => setSupportOpen(true)}
-                          className="text-sm text-white/70 hover:text-white transition-colors duration-200"
+                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 text-left cursor-pointer"
+                        >
+                          {link.label}
+                        </button>
+                      ) : link.action === "terms" ? (
+                        <button
+                          onClick={() => { setLegalTab("terms"); setLegalOpen(true); }}
+                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 text-left cursor-pointer"
+                        >
+                          {link.label}
+                        </button>
+                      ) : link.action === "privacy" ? (
+                        <button
+                          onClick={() => { setLegalTab("privacy"); setLegalOpen(true); }}
+                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 text-left cursor-pointer"
                         >
                           {link.label}
                         </button>
@@ -98,7 +119,7 @@ export default function Footer() {
                         <Link
                           href={link.href!}
                           target={link.href?.startsWith("http") ? "_blank" : undefined}
-                          className="text-sm text-white/70 hover:text-white transition-colors duration-200"
+                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 inline-block"
                         >
                           {link.label}
                         </Link>
@@ -112,22 +133,16 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="mt-14 border-t border-white/10" />
+        <div className="mt-14 border-t border-purple-500/10" />
 
         {/* Bottom */}
         <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-[#71717a] font-medium">
             © {new Date().getFullYear()} Block Web. All rights reserved.
           </p>
-
-          <div className="flex gap-6">
-            <button onClick={() => { setLegalTab("terms"); setLegalOpen(true); }} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
-              Terms and Conditions
-            </button>
-            <button onClick={() => { setLegalTab("privacy"); setLegalOpen(true); }} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
-              Privacy Policy
-            </button>
-          </div>
+          <p className="text-xs text-[#52525b] font-medium">
+            Crafted for absolute digital excellence.
+          </p>
         </div>
       </div>
 

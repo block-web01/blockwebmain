@@ -60,13 +60,13 @@ export default function Header() {
             }}
             className="flex items-center gap-3 group z-50"
           >
-            <div className="relative overflow-hidden rounded-xl border border-purple-500/20 p-1 bg-purple-500/5 group-hover:border-purple-500/40 transition-colors">
+            <div className="relative overflow-hidden rounded-full h-9 w-9">
               <Image
                 src="/logo.png"
                 alt="Block Web Logo"
-                width={32}
-                height={32}
-                className="h-8 w-8 rounded-lg object-contain transition-transform duration-300 group-hover:scale-105"
+                width={36}
+                height={36}
+                className="h-full w-full rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
             <span className="text-white font-extrabold text-xl tracking-tight transition-colors group-hover:text-purple-300">

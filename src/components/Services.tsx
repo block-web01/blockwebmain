@@ -61,6 +61,147 @@ const services = [
   },
 ];
 
+interface ServiceCardProps {
+  service: typeof services[0];
+  cardVariants: Variants;
+}
+
+function ServiceCard({ service, cardVariants }: ServiceCardProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { Icon } = service;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    
+    // Mouse position relative to the container
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Calculate rotation angles (tilt range: -10deg to 10deg)
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((centerY - y) / centerY) * 10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+    
+    containerRef.current.style.setProperty("--mouse-x", `${x}px`);
+    containerRef.current.style.setProperty("--mouse-y", `${y}px`);
+    containerRef.current.style.setProperty("--rotate-x", `${rotateX}deg`);
+    containerRef.current.style.setProperty("--rotate-y", `${rotateY}deg`);
+  };
+
+  const handleMouseEnter = () => {
+    if (!containerRef.current) return;
+    containerRef.current.style.setProperty("--glow-opacity", "1");
+    containerRef.current.style.setProperty("--scale", "1.02");
+  };
+
+  const handleMouseLeave = () => {
+    if (!containerRef.current) return;
+    const card = containerRef.current;
+    card.style.setProperty("--glow-opacity", "0");
+    card.style.setProperty("--scale", "1");
+    card.style.setProperty("--rotate-x", "0deg");
+    card.style.setProperty("--rotate-y", "0deg");
+  };
+
+  return (
+    <motion.div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      variants={cardVariants}
+      className="group relative p-[1.5px] rounded-[2.5rem] bg-white/5 overflow-hidden transition-all duration-300 ease-out"
+      style={{
+        transform: "perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--scale, 1), var(--scale, 1), var(--scale, 1))",
+        transformStyle: "preserve-3d",
+      }}
+    >
+      {/* Radial border glow */}
+      <div 
+        className="absolute inset-0 opacity-0 transition-opacity duration-500 rounded-[2.5rem] pointer-events-none"
+        style={{
+          background: `radial-gradient(300px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), ${service.accent}, transparent 70%)`,
+          opacity: "var(--glow-opacity, 0)",
+          mixBlendMode: "screen"
+        }}
+      />
+
+      {/* Inner Card Content */}
+      <div 
+        className="relative h-full rounded-[2.4rem] bg-[#0c0814]/90 backdrop-blur-xl p-8 sm:p-10 overflow-hidden flex flex-col justify-between"
+        style={{
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* Spot light overlay inside card */}
+        <div 
+          className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: `radial-gradient(250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), ${service.bgStart}, transparent 80%)`,
+            opacity: "var(--glow-opacity, 0)"
+          }}
+        />
+
+        {/* Ambient Blur Blob in the corner */}
+        <div 
+          className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-[80px] opacity-20 group-hover:opacity-40 transition-all duration-700 ease-in-out group-hover:scale-125"
+          style={{ backgroundColor: service.blob }}
+        />
+
+        {/* Noise Grid overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[16px_16px] pointer-events-none" />
+
+        {/* Content Elements with 3D translation depth */}
+        <div className="relative z-10 flex flex-col h-full" style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}>
+          {/* Icon Container */}
+          <div 
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border backdrop-blur-xl shadow-lg transition-all duration-500 group-hover:translate-z-[20px] group-hover:-rotate-3"
+            style={{ 
+              backgroundColor: service.bgStart, 
+              borderColor: service.border,
+              transform: "translateZ(20px)"
+            }}
+          >
+            <Icon className="w-8 h-8 drop-shadow-[0_0_10px_rgba(255,255,255,0.15)]" style={{ color: service.accent }} strokeWidth={1.5} />
+          </div>
+
+          <h3 className="text-2xl font-black text-white mb-4 tracking-tight" style={{ transform: "translateZ(25px)" }}>
+            {service.title}
+          </h3>
+          
+          <p className="text-[#a1a1aa] leading-relaxed font-medium mb-6" style={{ transform: "translateZ(15px)" }}>
+            {service.desc}
+          </p>
+
+          {/* Explore CTA link with hover slide animation */}
+          <div 
+            className="mt-auto flex items-center gap-2 text-sm font-semibold tracking-wide transition-all duration-300"
+            style={{ 
+              color: service.accent,
+              transform: "translateZ(20px)"
+            }}
+          >
+            <span className="relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1.5px] after:bg-current group-hover:after:w-full after:transition-all after:duration-300">
+              Explore Capabilities
+            </span>
+            <svg 
+              className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor" 
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Services() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -132,52 +273,9 @@ export default function Services() {
           animate={isInView ? "visible" : "hidden"}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
         >
-          {services.map((service, index) => {
-            const { Icon } = service;
-            return (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group relative h-full rounded-[2.5rem] bg-[#0c0814] border border-white/5 overflow-hidden transition-all duration-500 hover:border-transparent hover:shadow-2xl"
-              >
-                {/* Dynamic Border Gradient injected on hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem] p-[1.5px]"
-                  style={{ background: `linear-gradient(135deg, ${service.border}, transparent, ${service.border})` }}
-                >
-                  <div className="absolute inset-0 bg-[#0c0814] rounded-[2.5rem]" />
-                </div>
-
-                {/* Animated Blur Blob beneath Icon container */}
-                <div 
-                  className="absolute top-10 right-10 w-40 h-40 rounded-full blur-[70px] opacity-20 group-hover:opacity-60 transition-all duration-700 ease-in-out group-hover:scale-150"
-                  style={{ backgroundColor: service.blob }}
-                />
-
-                {/* Noise Grid overlay inside card */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[12px_12px] opacity-30" />
-
-                {/* Main Card Content */}
-                <div className="relative z-10 flex flex-col p-8 sm:p-10 h-full">
-                  {/* Icon Container */}
-                  <div 
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border backdrop-blur-xl shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                    style={{ backgroundColor: service.bgStart, borderColor: service.border }}
-                  >
-                    <Icon className="w-8 h-8 drop-shadow-md" style={{ color: service.accent }} strokeWidth={1.5} />
-                  </div>
-
-                  <h3 className="text-2xl font-black text-white mb-4 tracking-tight group-hover:text-white transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="text-[#a1a1aa] leading-relaxed font-medium">
-                    {service.desc}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+          {services.map((service, index) => (
+            <ServiceCard key={index} service={service} cardVariants={cardVariants} />
+          ))}
         </motion.div>
       </div>
     </section>

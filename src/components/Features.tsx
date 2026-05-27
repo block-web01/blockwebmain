@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Layers, Zap, Gauge } from "lucide-react";
 
 const features = [
@@ -229,28 +229,107 @@ export default function Features() {
   const [active, setActive] = useState(0);
   const ActivePanel = panels[active];
 
+  // Animation variants for intersection entry
+  const sectionVariants: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.12,
+      }
+    }
+  };
+
+  const headerVariants: Variants = {
+    hidden: { opacity: 0, y: -40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 80,
+        damping: 16
+      }
+    }
+  };
+
+  const columnLeftVariants: Variants = {
+    hidden: { opacity: 0, y: 35 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 60,
+        damping: 14
+      }
+    }
+  };
+
+  const columnRightVariants: Variants = {
+    hidden: { opacity: 0, y: 35 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 60,
+        damping: 14
+      }
+    }
+  };
+
   return (
-    <section id="features" className="relative py-24 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a]" />
+    <section id="features" className="relative py-24 md:py-32 overflow-hidden bg-[#050209]">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a] opacity-40 pointer-events-none" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center"
+      >
+        
+        {/* Centered Title Section */}
+        <motion.div
+          variants={headerVariants}
+          className="flex flex-col items-center mb-16 text-center max-w-3xl"
+        >
+          <div className="flex items-center gap-2 mb-6">
+            <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-purple-500" />
+            <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#a78bfa] border border-purple-500/20 rounded-full bg-purple-500/5 backdrop-blur-md">
+              OUR CAPABILITIES
+            </span>
+            <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-purple-500" />
+          </div>
 
-          {/* Left: Animated Panel */}
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1]">
+            Engineered for <br className="hidden sm:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8b5cf6] via-[#d946ef] to-[#06b6d4]">
+              Absolute Excellence
+            </span>
+          </h2>
+
+          <p className="text-[#9ca3af] mt-6 text-lg leading-relaxed">
+            We don&apos;t just build software. We craft breathtaking digital experiences, highly resilient architectures, and scalable platforms tailored for heavy user influx.
+          </p>
+        </motion.div>
+
+        {/* Section Columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start w-full">
+          
+          {/* Column Left: Animated Mockup Widget */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
+            variants={columnLeftVariants}
             className="relative w-full"
           >
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                initial={{ opacity: 0, scale: 0.97, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: -8 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                exit={{ opacity: 0, scale: 0.97, y: -10 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
                 style={{ willChange: "transform, opacity" }}
               >
                 <ActivePanel />
@@ -258,38 +337,19 @@ export default function Features() {
             </AnimatePresence>
 
             {/* Background glow */}
-            <div className="absolute -inset-4 rounded-[20px] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.15)_0%,transparent_70%)] -z-10 animate-pulse duration-[8000ms]" />
+            <div className="absolute -inset-4 rounded-[20px] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.12)_0%,transparent_70%)] -z-10 animate-pulse duration-[8000ms]" />
           </motion.div>
 
-          {/* Right: Feature cards */}
-          <div className="lg:pt-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="mb-10"
-            >
-              <span className="inline-block mb-4 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#8b5cf6] border border-[rgba(124,58,237,0.2)] rounded-full bg-[rgba(124,58,237,0.06)]">
-                Why Block Web
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-                Built Different.
-                <br />
-                <span className="bg-gradient-to-r from-[#8b5cf6] to-[#5b21b6] bg-clip-text text-transparent">
-                  Built Better.
-                </span>
-              </h2>
-            </motion.div>
-
-            <div className="space-y-5">
-              {features.map((feature, i) => (
-                <motion.div
+          {/* Column Right: Three stacked service cards */}
+          <motion.div
+            variants={columnRightVariants}
+            className="space-y-4"
+          >
+            {features.map((feature, i) => {
+              const { icon: Icon } = feature;
+              return (
+                <div
                   key={feature.title}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
                   onMouseEnter={() => {
                     if (window.matchMedia("(hover: hover)").matches) {
                       setActive(i);
@@ -304,41 +364,49 @@ export default function Features() {
                   tabIndex={0}
                   role="tab"
                   aria-selected={active === i}
-                  className="group relative flex gap-5 p-5 rounded-[14px] cursor-pointer transition-all duration-300 overflow-hidden"
-                >
-                  {/* Sliding layout background */}
-                  {active === i && (
-                    <motion.div
-                      layoutId="activeFeatureBg"
-                      className="absolute inset-0 rounded-[14px] border border-[rgba(124,58,237,0.35)] bg-[#0f0b12] shadow-[0_0_24px_rgba(124,58,237,0.1)] -z-10"
-                      transition={{ type: "spring", stiffness: 220, damping: 25 }}
-                      style={{ willChange: "transform, opacity" }}
-                    />
-                  )}
-
-                  {/* Static background when not active */}
-                  {active !== i && (
-                    <div className="absolute inset-0 rounded-[14px] border border-[rgba(124,58,237,0.08)] bg-[#0f0b12]/40 -z-10 transition-colors duration-300 group-hover:border-[rgba(124,58,237,0.22)]" />
-                  )}
-
-                  <div className={`shrink-0 h-12 w-12 rounded-xl border flex items-center justify-center transition-all duration-300 ${
+                  className={`group relative flex gap-5 p-5 rounded-[14px] cursor-pointer transition-all duration-300 overflow-hidden border ${
                     active === i
-                      ? "bg-gradient-to-br from-[rgba(124,58,237,0.25)] to-[rgba(76,29,149,0.15)] border-[rgba(124,58,237,0.3)]"
-                      : "bg-gradient-to-br from-[rgba(124,58,237,0.15)] to-[rgba(76,29,149,0.1)] border-[rgba(124,58,237,0.15)] group-hover:border-[rgba(124,58,237,0.25)]"
-                  }`}>
-                    <feature.icon className={`h-5 w-5 transition-colors duration-300 ${active === i ? "text-[#a78bfa]" : "text-[#8b5cf6]"}`} />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-white mb-1">{feature.title}</h3>
-                    <p className="text-sm text-[#bdb7c8] leading-relaxed">{feature.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+                      ? "border-purple-500/30 bg-[#0f0b12] shadow-[0_0_30px_rgba(139,92,246,0.15)]"
+                      : "border-[rgba(124,58,237,0.08)] bg-[#0f0b12]/40 hover:border-purple-500/20 hover:bg-[#0f0b12]/60 hover:shadow-[0_0_24px_rgba(139,92,246,0.08)]"
+                  }`}
+                >
+                  {/* Subtle inner hover glow */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/[0.015] to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
+                  {/* Icon container with sliding color gradients */}
+                  <div className="relative shrink-0 h-12 w-12 rounded-xl overflow-hidden border border-purple-500/15 group-hover:border-purple-500/30 transition-all duration-300">
+                    
+                    {/* Default Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[rgba(124,58,237,0.15)] to-[rgba(76,29,149,0.1)] transition-opacity duration-500 group-hover:opacity-0" />
+                    
+                    {/* Active/Hover Background */}
+                    <div className={`absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-500/20 transition-opacity duration-500 ${
+                      active === i ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                    }`} />
+                    
+                    {/* Icon Element with 5-degree rotation on hover */}
+                    <div className="relative z-10 flex items-center justify-center w-full h-full">
+                      <Icon className={`h-5 w-5 transition-all duration-300 group-hover:rotate-[5deg] ${
+                        active === i ? "text-[#a78bfa] drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" : "text-[#8b5cf6] group-hover:text-purple-300"
+                      }`} />
+                    </div>
+                  </div>
+
+                  <div className="relative z-10">
+                    <h3 className="text-base font-bold text-white mb-1 transition-colors duration-300 group-hover:text-purple-300">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-[#bdb7c8] leading-relaxed transition-colors duration-300 group-hover:text-white/80">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </motion.div>
         </div>
-      </div>
+
+      </motion.div>
     </section>
   );
 }

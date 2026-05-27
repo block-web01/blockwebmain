@@ -3,16 +3,16 @@
 import { motion } from "framer-motion";
 
 function FloatingPaths({ position }: { position: number }) {
-  const paths = Array.from({ length: 12 }, (_, i) => ({
+  const paths = Array.from({ length: 6 }, (_, i) => ({
     id: i,
-    d: `M-${380 - i * 15 * position} -${189 + i * 18}C-${
-      380 - i * 15 * position
-    } -${189 + i * 18} -${312 - i * 15 * position} ${216 - i * 18} ${
-      152 - i * 15 * position
-    } ${343 - i * 18}C${616 - i * 15 * position} ${470 - i * 18} ${
-      684 - i * 15 * position
-    } ${875 - i * 18} ${684 - i * 15 * position} ${875 - i * 18}`,
-    width: 0.5 + i * 0.1,
+    d: `M-${380 - i * 25 * position} -${189 + i * 28}C-${
+      380 - i * 25 * position
+    } -${189 + i * 28} -${312 - i * 25 * position} ${216 - i * 28} ${
+      152 - i * 25 * position
+    } ${343 - i * 28}C${616 - i * 25 * position} ${470 - i * 28} ${
+      684 - i * 25 * position
+    } ${875 - i * 28} ${684 - i * 25 * position} ${875 - i * 28}`,
+    width: 0.6 + i * 0.15,
   }));
 
   return (
@@ -29,19 +29,15 @@ function FloatingPaths({ position }: { position: number }) {
             d={path.d}
             stroke="url(#pathGrad)"
             strokeWidth={path.width}
-            strokeOpacity={0.08 + path.id * 0.045}
-            initial={{ pathLength: 0.3, opacity: 0.4 }}
+            initial={{ pathLength: 0, opacity: 0 }}
             whileInView={{
               pathLength: 1,
-              opacity: [0.2, 0.5, 0.2],
-              pathOffset: [0, 1, 0],
+              opacity: 0.05 + path.id * 0.03,
             }}
-            viewport={{ once: true, margin: "200px" }}
-            style={{ willChange: "transform, stroke-dashoffset, opacity" }}
+            viewport={{ once: true, margin: "100px" }}
             transition={{
-              duration: 20 + (path.id % 4) * 5,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
+              duration: 2.0 + (path.id % 3) * 0.5,
+              ease: "easeOut",
             }}
           />
         ))}
