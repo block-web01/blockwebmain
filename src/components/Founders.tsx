@@ -81,8 +81,16 @@ function FlipCard({ founder, index }: { founder: Founder; index: number }) {
           setFlipped(!flipped);
         }
       }}
-      onFocus={() => setFlipped(true)}
-      onBlur={() => setFlipped(false)}
+      onFocus={() => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          setFlipped(true);
+        }
+      }}
+      onBlur={() => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          setFlipped(false);
+        }
+      }}
       tabIndex={0}
       role="button"
       aria-expanded={flipped}

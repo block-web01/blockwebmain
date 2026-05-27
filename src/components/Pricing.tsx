@@ -108,7 +108,7 @@ export default function Pricing() {
                   }}
                 />
 
-                <GlowCard className="w-full h-full relative z-10">
+                <GlowCard customSize className="w-full h-full relative z-10">
                   <div
                     className="relative z-10 flex flex-col h-full p-8 gap-6"
                   >

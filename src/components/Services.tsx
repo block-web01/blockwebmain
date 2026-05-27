@@ -115,7 +115,7 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       variants={cardVariants}
-      className="group relative p-[1.5px] rounded-[2.5rem] bg-white/5 overflow-hidden transition-all duration-300 ease-out"
+      className="group relative p-[1.5px] rounded-[1.8rem] sm:rounded-[2.5rem] bg-white/5 overflow-hidden transition-all duration-300 ease-out"
       style={{
         transform: "perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--scale, 1), var(--scale, 1), var(--scale, 1))",
         transformStyle: "preserve-3d",
@@ -133,7 +133,7 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
 
       {/* Inner Card Content */}
       <div 
-        className="relative h-full rounded-[2.4rem] bg-[#0c0814]/90 backdrop-blur-xl p-8 sm:p-10 overflow-hidden flex flex-col justify-between"
+        className="relative h-full rounded-[1.7rem] sm:rounded-[2.4rem] bg-[#0c0814]/90 backdrop-blur-xl p-6 sm:p-10 overflow-hidden flex flex-col justify-between"
         style={{
           transformStyle: "preserve-3d",
         }}
@@ -160,21 +160,21 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
         <div className="relative z-10 flex flex-col h-full" style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}>
           {/* Icon Container */}
           <div 
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border backdrop-blur-xl shadow-lg transition-all duration-500 group-hover:translate-z-[20px] group-hover:-rotate-3"
+            className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 sm:mb-8 border backdrop-blur-xl shadow-lg transition-all duration-500 group-hover:translate-z-[20px] group-hover:-rotate-3"
             style={{ 
               backgroundColor: service.bgStart, 
               borderColor: service.border,
               transform: "translateZ(20px)"
             }}
           >
-            <Icon className="w-8 h-8 drop-shadow-[0_0_10px_rgba(255,255,255,0.15)]" style={{ color: service.accent }} strokeWidth={1.5} />
+            <Icon className="w-6 h-6 sm:w-8 sm:h-8 drop-shadow-[0_0_10px_rgba(255,255,255,0.15)]" style={{ color: service.accent }} strokeWidth={1.5} />
           </div>
 
-          <h3 className="text-2xl font-black text-white mb-4 tracking-tight" style={{ transform: "translateZ(25px)" }}>
+          <h3 className="text-xl sm:text-2xl font-black text-white mb-3 sm:mb-4 tracking-tight" style={{ transform: "translateZ(25px)" }}>
             {service.title}
           </h3>
           
-          <p className="text-[#a1a1aa] leading-relaxed font-medium mb-6" style={{ transform: "translateZ(15px)" }}>
+          <p className="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed font-medium mb-5 sm:mb-6" style={{ transform: "translateZ(15px)" }}>
             {service.desc}
           </p>
 
