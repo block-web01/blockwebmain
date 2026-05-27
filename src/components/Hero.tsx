@@ -15,9 +15,9 @@ export default function Hero() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative z-10 text-center px-6 max-w-4xl"
+        className="relative z-10 text-center px-6 max-w-8xl"
       >
-        <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight">
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-tight">
           Designed with{" "}
           <span className="bg-linear-to-r from-[#8b5cf6] to-[#a78bfa] bg-clip-text text-transparent">
             Intelligence
@@ -36,9 +36,9 @@ export default function Hero() {
 
         <div className="mt-8 flex items-center justify-center">
 
-          <a href="https://wa.me/919939580371?text=Hi%2C%20I%20have%20a%20project%20idea%20can%20we%20discuss%20about%20this%20%3F" target="_blank" rel="noopener noreferrer" className="group px-8 py-3 rounded-full bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white font-semibold shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.85)] transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 relative overflow-hidden sarvaya-btn flex items-center justify-center">
+          <a href="https://wa.me/919939580371?text=Hi%2C%20I%20have%20a%20project%20idea%20can%20we%20discuss%20about%20this%20%3F" target="_blank" rel="noopener noreferrer" className="group px-8 py-3 rounded-full bg-linear-to-r from-[#8b5cf6] to-[#5b21b6] text-white font-semibold shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.85)] transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 relative overflow-hidden glossy-btn flex items-center justify-center">
             Let’s Chat
-            <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-300 transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            <ArrowUpRight className="ml-2 h-4 w-4 transition-all duration-300 transform -translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100" />
           </a>
 
         </div>
