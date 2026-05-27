@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Code, Smartphone, Palette, Layers, Zap, Briefcase } from "lucide-react";
 
 const services = [
@@ -119,6 +119,7 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
       style={{
         transform: "perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--scale, 1), var(--scale, 1), var(--scale, 1))",
         transformStyle: "preserve-3d",
+        willChange: "transform, opacity",
       }}
     >
       {/* Radial border glow */}
@@ -207,7 +208,6 @@ function ServiceCard({ service, cardVariants }: ServiceCardProps) {
 
 export default function Services() {
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -273,7 +273,8 @@ export default function Services() {
           ref={containerRef}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
         >
           {services.map((service, index) => (
