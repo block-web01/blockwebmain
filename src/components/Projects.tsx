@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Globe, Layers, Laptop, Shield } from "lucide-react";
 
 // Categories mapping
@@ -219,6 +219,7 @@ function RenderMockScreen({ type }: { type: string }) {
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const shouldReduceMotion = useReducedMotion();
 
   const filteredProjects = projects.filter(
     (proj) => activeCategory === "All" || proj.category === activeCategory
@@ -232,18 +233,19 @@ export default function Projects() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <motion.span
-              initial={{ opacity: 0, y: 10 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="inline-block mb-3 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#6F42C1] border border-[#6F42C1]/20 rounded-full bg-[#6F42C1]/5"
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="block mb-3 text-xs font-extrabold uppercase tracking-widest text-[#6F42C1] font-heading"
             >
               The Receipts
             </motion.span>
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
               className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212]"
             >
               Featured Work
@@ -252,10 +254,10 @@ export default function Projects() {
 
           {/* Filtering Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             className="flex flex-wrap gap-2"
           >
             {categories.map((cat) => (
@@ -281,11 +283,10 @@ export default function Projects() {
               <motion.div
                 layout
                 key={project.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="group flex flex-col justify-between"
               >
                 <div>

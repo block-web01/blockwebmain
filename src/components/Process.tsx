@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Compass, Palette, Code, Rocket } from "lucide-react";
 
 const steps = [
@@ -31,6 +31,8 @@ const steps = [
 ];
 
 export default function Process() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="process" className="relative py-24 bg-[#F8F6F2]">
       <div className="section-container">
@@ -38,19 +40,32 @@ export default function Process() {
         {/* Section Header */}
         <div className="text-center mb-20 max-w-2xl mx-auto">
           <motion.span
-            initial={{ opacity: 0, y: 10 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="inline-block mb-3 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#6F42C1] border border-[#6F42C1]/20 rounded-full bg-[#6F42C1]/5"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="block mb-3 text-xs font-extrabold uppercase tracking-widest text-[#6F42C1] font-heading"
           >
             How We Work
           </motion.span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4">
+          <motion.h2
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4"
+          >
             Our Process
-          </h2>
-          <p className="text-[#555555] text-base sm:text-lg">
+          </motion.h2>
+          <motion.p
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            className="text-[#555555] text-base sm:text-lg"
+          >
             A simple, structured 4-step timeline from brief to deployment.
-          </p>
+          </motion.p>
         </div>
 
         {/* Timeline Grid (4 steps) */}
@@ -64,11 +79,11 @@ export default function Process() {
             return (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, delay: idx * 0.1, ease: "easeOut" }}
-                className="relative bg-white border border-[#E8E8E8] rounded-[18px] p-6.5 shadow-[0_4px_12px_rgba(0,0,0,0.01)] z-10 flex flex-col items-start hover:border-[#6F42C1]/30 hover:shadow-[0_8px_25px_rgba(0,0,0,0.03)] transition-all duration-300"
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8, pointerEvents: "none" }}
+                whileInView={{ opacity: 1, y: 0, pointerEvents: "auto" }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.3 + (idx * 0.08), ease: "easeOut" }}
+                className="relative bg-white border border-[#E8E8E8] rounded-[18px] p-6.5 shadow-[0_4px_12px_rgba(0,0,0,0.01)] z-10 flex flex-col items-start hover:border-[#6F42C1]/30 hover:shadow-[0_8px_25px_rgba(0,0,0,0.03)] transition-[border-color,box-shadow] duration-300 ease-out"
               >
                 {/* Step Number Badge */}
                 <div className="absolute top-4 right-6 text-3xl font-heading font-black text-[#6F42C1]/10">

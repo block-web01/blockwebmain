@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Send, ChevronLeft, ChevronRight, Clock, Calendar, Loader2, ShieldAlert, LogIn, UserPlus, ArrowUpRight, Mail, Phone, MapPin } from "lucide-react";
 import { useSession } from "next-auth/react";
 import AuthModal from "./AuthModal";
@@ -214,6 +214,7 @@ function TimeSlotPicker({ label, selectedDate, selectedTime, onSelect }: TimeSlo
 
 export default function Contact() {
   const { data: session, status } = useSession();
+  const shouldReduceMotion = useReducedMotion();
   const [contactAuthOpen, setContactAuthOpen] = useState(false);
   const [contactAuthMode, setContactAuthMode] = useState<"login" | "signup">("login");
 
@@ -250,26 +251,45 @@ export default function Contact() {
         {/* Section Heading */}
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <motion.span
-            initial={{ opacity: 0, y: 10 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="inline-block mb-3 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#6F42C1] border border-[#6F42C1]/20 rounded-full bg-[#6F42C1]/5"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="block mb-3 text-xs font-extrabold uppercase tracking-widest text-[#6F42C1] font-heading"
           >
             Get In Touch
           </motion.span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4">
+          <motion.h2
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4"
+          >
             Let&apos;s Build Together
-          </h2>
-          <p className="text-[#555555] text-base sm:text-lg">
+          </motion.h2>
+          <motion.p
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            className="text-[#555555] text-base sm:text-lg"
+          >
             Ready to scale your business? Book a call or send a message below.
-          </p>
+          </motion.p>
         </div>
 
         {/* Two-Column Grid: Map/Details vs Form */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* LEFT: Business Details & Map */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.3 }}
+            className="lg:col-span-5 flex flex-col gap-8"
+          >
             
             {/* Details Card */}
             <div className="bg-white border border-[#E8E8E8] rounded-[18px] p-8 shadow-[0_4px_12px_rgba(0,0,0,0.01)] flex flex-col gap-6">
@@ -332,15 +352,15 @@ export default function Contact() {
                 loading="lazy"
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* RIGHT: Call Booking Form Card */}
           <div className="lg:col-span-7">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.35 }}
               className="bg-white border border-[#E8E8E8] rounded-[18px] p-8 md:p-10 shadow-[0_4px_16px_rgba(0,0,0,0.015)] overflow-hidden"
             >
               <AnimatePresence mode="wait">

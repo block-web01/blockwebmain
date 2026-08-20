@@ -90,7 +90,7 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <span className="inline-block mb-4 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#8b5cf6] border border-[rgba(124,58,237,0.2)] rounded-full bg-[rgba(124,58,237,0.06)]">
+          <span className="block mb-4 text-xs font-extrabold uppercase tracking-widest text-[#8b5cf6] font-heading">
             Pricing
           </span>
 
@@ -262,7 +262,7 @@ export default function Pricing() {
               <div className="relative z-10 flex flex-col h-full p-8 gap-6">
                 <div className="flex flex-col gap-6">
                   <div>
-                    <span className="inline-block mb-3 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#8b5cf6] border border-[rgba(124,58,237,0.3)] rounded-full bg-[rgba(124,58,237,0.08)]">
+                    <span className="block mb-3 text-xs font-extrabold uppercase tracking-widest text-[#8b5cf6] font-heading">
                       Most Flexible
                     </span>
                     <h3 className="text-2xl font-black text-white">

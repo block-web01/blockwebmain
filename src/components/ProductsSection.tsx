@@ -20,7 +20,7 @@ export default function ProductsSection() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block mb-4 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#8b5cf6] border border-[rgba(124,58,237,0.2)] rounded-full bg-[rgba(124,58,237,0.06)] flex items-center justify-center gap-2 max-w-fit">
+              <span className="flex items-center gap-2 mb-4 text-xs font-extrabold uppercase tracking-widest text-[#8b5cf6] font-heading max-w-fit">
                 <ShoppingBag className="w-3.5 h-3.5" />
                 Our Products
               </span>

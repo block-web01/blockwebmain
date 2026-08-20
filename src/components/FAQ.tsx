@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 const faqs = [
@@ -34,6 +34,7 @@ const faqs = [
 
 export default function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const toggleFAQ = (idx: number) => {
     setOpenIdx(openIdx === idx ? null : idx);
@@ -46,19 +47,32 @@ export default function FAQ() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <motion.span
-            initial={{ opacity: 0, y: 10 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="inline-block mb-3 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#6F42C1] border border-[#6F42C1]/20 rounded-full bg-[#6F42C1]/5"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="block mb-3 text-xs font-extrabold uppercase tracking-widest text-[#6F42C1] font-heading"
           >
             Curious Minds
           </motion.span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4">
+          <motion.h2
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4"
+          >
             Frequently Asked Questions
-          </h2>
-          <p className="text-[#555555] text-base">
+          </motion.h2>
+          <motion.p
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            className="text-[#555555] text-base"
+          >
             Everything you need to know about our services and process.
-          </p>
+          </motion.p>
         </div>
 
         {/* Minimal Accordion List */}
@@ -66,7 +80,14 @@ export default function FAQ() {
           {faqs.map((faq, idx) => {
             const isOpen = openIdx === idx;
             return (
-              <div key={idx} className="py-5">
+              <motion.div
+                key={idx}
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.3 + (idx * 0.05), ease: "easeOut" }}
+                className="py-5"
+              >
                 <button
                   onClick={() => toggleFAQ(idx)}
                   className="w-full flex items-center justify-between text-left py-2 font-heading font-extrabold text-base sm:text-lg text-[#121212] hover:text-[#6F42C1] transition-colors focus:outline-none cursor-pointer group"
@@ -95,7 +116,7 @@ export default function FAQ() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>

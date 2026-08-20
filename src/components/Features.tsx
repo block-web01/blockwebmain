@@ -297,7 +297,7 @@ export default function Features() {
         >
           <div className="flex items-center gap-2 mb-6">
             <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-purple-500" />
-            <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#a78bfa] border border-purple-500/20 rounded-full bg-purple-500/5 backdrop-blur-md">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-[#a78bfa] font-heading">
               OUR CAPABILITIES
             </span>
             <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-purple-500" />

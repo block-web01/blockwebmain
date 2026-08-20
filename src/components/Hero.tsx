@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Check, ArrowUpRight, Star } from "lucide-react";
 import Image from "next/image";
 
@@ -16,6 +16,8 @@ const features = [
 ];
 
 export default function Hero() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="home" className="relative min-h-screen pt-32 pb-20 flex items-center bg-[#F8F6F2] overflow-hidden">
       {/* Decorative background grid element */}
@@ -91,51 +93,74 @@ export default function Hero() {
           <div className="lg:col-span-5 relative flex items-center justify-center">
             
             {/* Visual Container */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-              className="relative w-full max-w-[480px] lg:max-w-none aspect-[4/3] lg:aspect-[1.1] flex items-center justify-center"
-            >
+            <div className="relative w-full max-w-[480px] lg:max-w-none aspect-[4/3] lg:aspect-[1.1] flex items-center justify-center">
+              
               {/* Plant / Leaf Decoration in background */}
-              <div className="absolute -left-6 -bottom-10 w-24 h-24 text-green-700/10 z-0 pointer-events-none select-none">
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+                className="absolute -left-6 -bottom-10 w-24 h-24 text-green-700/10 z-0 pointer-events-none select-none"
+              >
                 <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full transform -rotate-12">
                   <path d="M50 0C50 0 35 30 35 60C35 90 50 100 50 100C50 100 65 90 65 60C65 30 50 0 50 0ZM50 15C52 28 58 48 58 60C58 70 54 82 50 90C46 82 42 70 42 60C42 48 48 28 50 15Z" />
                 </svg>
-              </div>
-              <div className="absolute -right-4 -bottom-6 w-16 h-16 text-[#F7B500]/10 z-0 pointer-events-none select-none">
+              </motion.div>
+              
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.75, ease: "easeOut" }}
+                className="absolute -right-4 -bottom-6 w-16 h-16 text-[#F7B500]/10 z-0 pointer-events-none select-none"
+              >
                 <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full transform rotate-45">
                   <path d="M50 0C50 0 35 30 35 60C35 90 50 100 50 100C50 100 65 90 65 60C65 30 50 0 50 0ZM50 15C52 28 58 48 58 60C58 70 54 82 50 90C46 82 42 70 42 60C42 48 48 28 50 15Z" />
                 </svg>
-              </div>
+              </motion.div>
 
-              {/* LAPTOP MOCKUP */}
-              <div className="relative w-[90%] aspect-[16/10] bg-[#1a1a1a] rounded-[18px] p-2 sm:p-3 shadow-[0_20px_50px_rgba(0,0,0,0.12)] border border-[#E8E8E8]/40 z-10">
-                <div className="relative w-full h-full bg-[#fcfbfa] rounded-[10px] overflow-hidden border border-[#222]">
-                  {/* Laptop screen header */}
-                  <div className="w-full h-4 sm:h-5 bg-[#E8E8E8] px-2 flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+              {/* LAPTOP MOCKUP (ENTRANCE ENVELOPE) */}
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 40, scale: 0.96 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-[90%] aspect-[16/10] z-10"
+              >
+                <motion.div
+                  animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }}
+                  transition={shouldReduceMotion ? {} : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-full h-full bg-[#1a1a1a] rounded-[18px] p-2 sm:p-3 shadow-[0_20px_50px_rgba(0,0,0,0.12)] border border-[#E8E8E8]/40 relative"
+                >
+                  <div className="relative w-full h-full bg-[#fcfbfa] rounded-[10px] overflow-hidden border border-[#222]">
+                    {/* Laptop screen header */}
+                    <div className="w-full h-4 sm:h-5 bg-[#E8E8E8] px-2 flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                    </div>
+                    {/* Site Preview inside screen */}
+                    <div className="w-full h-[calc(100%-16px)] sm:h-[calc(100%-20px)] relative">
+                      <Image
+                        src="/nexcart_preview.png"
+                        alt="Block Web Site Preview"
+                        fill
+                        className="object-cover"
+                        priority
+                      />
+                    </div>
                   </div>
-                  {/* Site Preview inside screen */}
-                  <div className="w-full h-[calc(100%-16px)] sm:h-[calc(100%-20px)] relative">
-                    <Image
-                      src="/nexcart_preview.png"
-                      alt="Block Web Site Preview"
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                </div>
-                {/* Laptop Base (Keyboard region) */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[95%] w-[106%] h-2.5 bg-[#d2d2d2] rounded-b-[4px] shadow-[0_10px_20px_rgba(0,0,0,0.06)] border-t border-white/20 z-20" />
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[120%] w-[24%] h-1 bg-[#b5b5b5] rounded-b-[3px] z-30" />
-              </div>
+                  {/* Laptop Base (Keyboard region) */}
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[95%] w-[106%] h-2.5 bg-[#d2d2d2] rounded-b-[4px] shadow-[0_10px_20px_rgba(0,0,0,0.06)] border-t border-white/20 z-20" />
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[120%] w-[24%] h-1 bg-[#b5b5b5] rounded-b-[3px] z-30" />
+                </motion.div>
+              </motion.div>
 
               {/* MOBILE MOCKUP: overlapping in bottom-left */}
-              <div className="absolute -left-2 sm:-left-6 bottom-4 w-[24%] aspect-[9/19] bg-[#1a1a1a] rounded-[24px] p-1.5 shadow-[0_25px_50px_rgba(0,0,0,0.18)] border border-[#E8E8E8]/20 z-20 hidden sm:block">
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -45, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute -left-2 sm:-left-6 bottom-4 w-[24%] aspect-[9/19] bg-[#1a1a1a] rounded-[24px] p-1.5 shadow-[0_25px_50px_rgba(0,0,0,0.18)] border border-[#E8E8E8]/20 z-20 hidden sm:block"
+              >
                 <div className="relative w-full h-full bg-[#fcfbfa] rounded-[20px] overflow-hidden border border-[#222] flex flex-col">
                   {/* Phone speaker/camera notch */}
                   <div className="w-12 h-3.5 bg-black rounded-b-[10px] mx-auto absolute top-0 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center">
@@ -155,10 +180,15 @@ export default function Hero() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* FLOATING REVIEW CARD */}
-              <div className="absolute left-4 -bottom-6 bg-white border border-[#E8E8E8] rounded-[18px] p-4 shadow-[0_12px_32px_rgba(0,0,0,0.06)] z-30 max-w-[200px] hidden md:block">
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute left-4 -bottom-6 bg-white border border-[#E8E8E8] rounded-[18px] p-4 shadow-[0_12px_32px_rgba(0,0,0,0.06)] z-30 max-w-[200px] hidden md:block"
+              >
                 <div className="flex gap-0.5 mb-1.5">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} size={12} className="text-[#F7B500]" fill="#F7B500" />
@@ -173,10 +203,15 @@ export default function Hero() {
                   </div>
                   <span className="text-[10px] font-bold text-[#555555]">Amol Kulkarni</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* PRICING BADGE: Top Right Floating Box */}
-              <div className="absolute -right-4 -top-6 bg-[#0D1220] rounded-[18px] p-5 shadow-[0_20px_40px_rgba(111,66,193,0.12)] border border-white/5 z-30 min-w-[170px] flex flex-col gap-1 select-none">
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 35, y: -25, rotate: 6 }}
+                animate={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute -right-4 -top-6 bg-[#0D1220] rounded-[18px] p-5 shadow-[0_20px_40px_rgba(111,66,193,0.12)] border border-white/5 z-30 min-w-[170px] flex flex-col gap-1 select-none"
+              >
                 <span className="text-[11px] font-bold tracking-widest text-[#6F42C1] uppercase">
                   Business Website
                 </span>
@@ -192,9 +227,9 @@ export default function Hero() {
                 <span className="text-[9px] text-white/50 leading-tight">
                   Fixed Pricing &bull; Delivered Fast
                 </span>
-              </div>
+              </motion.div>
 
-            </motion.div>
+            </div>
           </div>
 
         </div>

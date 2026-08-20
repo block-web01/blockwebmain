@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Star } from "lucide-react";
 
 const testimonials = [
@@ -49,6 +49,8 @@ const testimonials = [
 ];
 
 export default function Reviews() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="reviews" className="relative py-24 bg-[#F8F6F2]">
       <div className="section-container">
@@ -56,24 +58,37 @@ export default function Reviews() {
         {/* Section Header */}
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <motion.span
-            initial={{ opacity: 0, y: 10 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="inline-block mb-3 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#6F42C1] border border-[#6F42C1]/20 rounded-full bg-[#6F42C1]/5"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="block mb-3 text-xs font-extrabold uppercase tracking-widest text-[#6F42C1] font-heading"
           >
             Word on the Street
           </motion.span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4">
+          <motion.h2
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4"
+          >
             What Our Clients Say
-          </h2>
-          <div className="flex items-center justify-center gap-2 text-xs font-bold text-[#555555]">
+          </motion.h2>
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            className="flex items-center justify-center gap-2 text-xs font-bold text-[#555555]"
+          >
             <div className="flex gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} size={12} className="text-[#F7B500] fill-[#F7B500]" />
               ))}
             </div>
             <span>5.0 rating on Google &bull; Verified Clients</span>
-          </div>
+          </motion.div>
         </div>
 
         {/* Testimonials Grid */}
@@ -81,12 +96,12 @@ export default function Reviews() {
           {testimonials.map((test, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.4, delay: idx * 0.05, ease: "easeOut" }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="bg-white border border-[#E8E8E8] rounded-[18px] p-6 shadow-[0_4px_12px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] transition-all duration-300 flex flex-col justify-between"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8, pointerEvents: "none" }}
+              whileInView={{ opacity: 1, y: 0, pointerEvents: "auto" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.3 + (idx * 0.05), ease: "easeOut" }}
+              whileHover={shouldReduceMotion ? {} : { y: -4, transition: { duration: 0.2, ease: "easeOut" } }}
+              className="bg-white border border-[#E8E8E8] rounded-[18px] p-6 shadow-[0_4px_12px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] transition-[box-shadow] duration-300 ease-out flex flex-col justify-between"
             >
               <div>
                 {/* 5 Stars */}
