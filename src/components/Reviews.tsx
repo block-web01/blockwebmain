@@ -1,155 +1,124 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import { Star } from "lucide-react";
 
-type Review = {
-  id: number;
-  name: string;
-  role: string;
-  image: string;
-  review: string;
-};
-
-const reviews: Review[] = [
+const testimonials = [
   {
-    id: 1,
-    name: "Bardia Adibi",
-    role: "Product Designer @ BA Studio",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    review:
-      "Using this platform has completely transformed how we approach product design. The intuitive interface and versatile features have allowed us to create an engaging user experience with ease.",
+    initials: "VG",
+    name: "Vishwas Girdher",
+    source: "Google Review",
+    rating: 5,
+    text: "Block Web is literally the best team out there. They are extremely clear on communication, super adaptive, and highly committed to their deadlines. Highly recommended!",
   },
   {
-    id: 2,
-    name: "Sophia Carter",
-    role: "UI/UX Designer",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    review:
-      "An absolute game changer. The workflow is smooth, and performance is unmatched.",
+    initials: "AK",
+    name: "Amol Kulkarni",
+    source: "Google Review",
+    rating: 5,
+    text: "Excellent work quality and a very professional team. Block Web delivered our website much faster than expected (exactly 12 days!) with great attention to detail. Will definitely work with them again.",
   },
   {
-    id: 3,
-    name: "Arjun Mehta",
-    role: "Frontend Developer",
-    image: "https://randomuser.me/api/portraits/men/65.jpg",
-    review:
-      "Clean architecture, beautiful UI, and blazing fast performance.",
+    initials: "RS",
+    name: "Rahul Sharma",
+    source: "Google Review",
+    rating: 5,
+    text: "Block Web helped us build a complete brand identity from scratch. The logo, corporate colors, and conversion-focused web design came together beautifully. Their creative vision is top-tier.",
   },
   {
-    id: 4,
-    name: "Emily Stone",
-    role: "Product Manager",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
-    review:
-      "Improved our workflow and team collaboration drastically.",
+    initials: "PM",
+    name: "Priya Mehta",
+    source: "Google Review",
+    rating: 5,
+    text: "We hired Block Web as our development partner and it was the best decision we made. Our clients love the output and the speed of execution is unmatched. True professionals.",
   },
   {
-    id: 5,
-    name: "Rahul Verma",
-    role: "Backend Engineer",
-    image: "https://randomuser.me/api/portraits/men/22.jpg",
-    review:
-      "Scalable and robust. Everything just works perfectly.",
+    initials: "SK",
+    name: "Saurabh Kale",
+    source: "Google Review",
+    rating: 5,
+    text: "Got my website designed and deployed in just 12 days. The speed was incredible, but the quality of the UI/UX was even more impressive. SEO optimized, fast loading, and pixel-perfect.",
   },
   {
-    id: 6,
-    name: "Olivia Brown",
-    role: "Startup Founder",
-    image: "https://randomuser.me/api/portraits/women/12.jpg",
-    review:
-      "We launched faster than ever before using this platform.",
+    initials: "NK",
+    name: "Neha Kapoor",
+    source: "Google Review",
+    rating: 5,
+    text: "Very responsive team and their project management was seamless. They kept us in the loop at every stage of the design. The final product exceeded our expectations in both style and functionality.",
   },
 ];
 
 export default function Reviews() {
-  const [active, setActive] = useState(reviews[0]);
-
   return (
-    <section className="py-20 md:py-28 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-
-        {/* 🔥 TAG */}
-        <div className="flex justify-center mb-6">
-          <div className="px-4 py-1.5 text-xs tracking-widest uppercase rounded-full border border-[#8b5cf6]/30 text-[#8b5cf6] bg-[#8b5cf6]/10 backdrop-blur-md">
-            Review
+    <section id="reviews" className="relative py-24 bg-[#F8F6F2]">
+      <div className="section-container">
+        
+        {/* Section Header */}
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="inline-block mb-3 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#6F42C1] border border-[#6F42C1]/20 rounded-full bg-[#6F42C1]/5"
+          >
+            Word on the Street
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212] mb-4">
+            What Our Clients Say
+          </h2>
+          <div className="flex items-center justify-center gap-2 text-xs font-bold text-[#555555]">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={12} className="text-[#F7B500] fill-[#F7B500]" />
+              ))}
+            </div>
+            <span>5.0 rating on Google &bull; Verified Clients</span>
           </div>
         </div>
 
-        {/* Heading */}
-        <h2 className="text-3xl md:text-5xl font-extrabold text-white text-center tracking-tight">
-          Feedback from Our Community
-        </h2>
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {testimonials.map((test, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.4, delay: idx * 0.05, ease: "easeOut" }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="bg-white border border-[#E8E8E8] rounded-[18px] p-6 shadow-[0_4px_12px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                {/* 5 Stars */}
+                <div className="flex gap-0.5 mb-4">
+                  {[...Array(test.rating)].map((_, i) => (
+                    <Star key={i} size={14} className="text-[#F7B500] fill-[#F7B500]" />
+                  ))}
+                </div>
 
-        <p className="text-[#bdb7c8]/70 text-center mt-3 text-sm md:text-base">
-          Real experiences from our users
-        </p>
+                {/* Review Text */}
+                <p className="text-sm text-[#555555] leading-relaxed mb-6 italic">
+                  "{test.text}"
+                </p>
+              </div>
 
-        {/* Layout */}
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14 mt-12">
-
-          {/* 👤 Avatar Grid */}
-          <div className="grid grid-cols-3 sm:grid-cols-3 gap-3 sm:gap-4">
-            {reviews.map((user) => (
-              <motion.div
-                key={user.id}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setActive(user)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setActive(user);
-                  }
-                }}
-                tabIndex={0}
-                role="button"
-                style={{ willChange: "transform" }}
-                className={`cursor-pointer rounded-xl p-0.5 transition-all ${
-                  active.id === user.id
-                    ? "bg-linear-to-br from-[#8b5cf6] to-[#5b21b6]"
-                    : "bg-transparent"
-                }`}
-              >
-                <Image
-                  src={user.image}
-                  alt={user.name}
-                  width={80}
-                  height={80}
-                  loading="lazy"
-                  className={`w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl transition-all ${
-                    active.id === user.id
-                      ? "opacity-100"
-                      : "opacity-60 hover:opacity-100"
-                  }`}
-                />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* 💬 Review Card */}
-          <motion.div
-            key={active.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{ willChange: "transform, opacity" }}
-            className="w-full md:flex-1 bg-[#140d1f] border border-[rgba(124,58,237,0.2)] rounded-2xl p-5 sm:p-6 shadow-[0_0_40px_rgba(124,58,237,0.2)]"
-          >
-            {/* Name */}
-            <div className="mb-3">
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                {active.name}
-              </h3>
-              <p className="text-xs sm:text-sm text-[#bdb7c8]">
-                {active.role}
-              </p>
-            </div>
-
-            {/* Review */}
-            <p className="text-sm sm:text-base text-[#d1cfe0] leading-relaxed">
-              “{active.review}”
-            </p>
-          </motion.div>
+              {/* Author Section */}
+              <div className="flex items-center gap-3 border-t border-[#E8E8E8] pt-4 mt-auto">
+                {/* Circular Avatar */}
+                <div className="w-9 h-9 rounded-full bg-[#6F42C1]/10 text-[#6F42C1] border border-[#6F42C1]/20 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                  {test.initials}
+                </div>
+                <div>
+                  <h4 className="text-sm font-heading font-extrabold text-[#121212]">
+                    {test.name}
+                  </h4>
+                  <span className="text-[10px] font-bold text-[#555555]">
+                    {test.source}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -5,37 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { LegalModal } from "./LegalModal";
 import { SupportModal } from "./SupportModal";
-
-type FooterLink = {
-  label: string;
-  href?: string;
-  action?: string;
-};
-
-const footerLinks: Record<string, FooterLink[]> = {
-  Services: [
-    { label: "Web Development", href: "#services" },
-    { label: "App Development", href: "#services" },
-    { label: "UI/UX Design", href: "#services" },
-    { label: "Architecture", href: "#features" },
-    { label: "Performance", href: "#features" },
-  ],
-  Company: [
-    { label: "About Us", href: "#features" },
-    { label: "Our Team", href: "#founders" },
-    { label: "Contact", href: "#contact" },
-  ],
-  Resources: [
-    { label: "Support Portal", action: "support" },
-    { label: "Terms of Service", action: "terms" },
-    { label: "Privacy Policy", action: "privacy" },
-  ],
-  Social: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/the-v-5s" },
-    { label: "Instagram", href: "https://www.instagram.com/block_web01" },
-    { label: "Twitter / X", href: "https://twitter.com/the5s_Founder" },
-  ],
-};
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   const [legalOpen, setLegalOpen] = useState(false);
@@ -43,109 +13,154 @@ export default function Footer() {
   const [supportOpen, setSupportOpen] = useState(false);
 
   return (
-    <footer className="relative z-[999] isolate overflow-hidden border-t border-purple-500/10">
-      
-      {/* Semi-transparent dark background that lets the global background grid show through gently */}
-      <div className="absolute inset-0 bg-[#07040d]/90 backdrop-blur-xl" />
-
-      {/* Dynamic top edge glow line */}
-      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#8b5cf6]/30 to-transparent" />
-
-      {/* Premium top radial glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] pointer-events-none 
-        bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.12),transparent_70%)]" 
-      />
-
-      {/* CONTENT */}
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 pb-10">
+    <footer className="relative z-[99] bg-[#0D1220] border-t border-white/5 py-16 text-white overflow-hidden">
+      <div className="section-container">
         
-        {/* Top */}
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
+        {/* Top footer area */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 mb-12">
           
-          {/* Brand */}
-          <div className="max-w-xs">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative overflow-hidden rounded-full h-9 w-9">
+          {/* Brand Info */}
+          <div className="lg:col-span-4">
+            <Link
+              href="#home"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="flex items-center gap-2 mb-4 group inline-block"
+            >
+              <div className="relative overflow-hidden rounded-full h-8 w-8">
                 <Image
                   src="/logo.png"
                   alt="Block Web Logo"
-                  width={36}
-                  height={36}
+                  width={32}
+                  height={32}
                   className="h-full w-full rounded-full object-cover"
                 />
               </div>
-              <span className="text-lg font-extrabold text-white tracking-tight">
+              <span className="font-heading font-extrabold text-lg tracking-tight text-white transition-colors group-hover:text-[#6F42C1]">
                 Block Web
               </span>
-            </div>
-            <p className="text-sm text-[#a1a1aa] leading-relaxed font-medium">
-              Designed with Intelligence.<br />
-              Executed with Smartness.
+            </Link>
+            <p className="text-xs text-[#A0AEC0] leading-relaxed max-w-sm mb-6">
+              Block Web is a premium web development agency delivering high-performance, responsive, and conversion-focused websites engineered for modern businesses.
+            </p>
+            <p className="text-[10px] text-white/40">
+              Jaipur, Rajasthan, India &bull; Global Operations
             </p>
           </div>
 
-          {/* Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 flex-1">
-            {Object.entries(footerLinks).map(([category, links]) => (
-              <div key={category}>
-                <p className="text-sm font-semibold text-white mb-5 tracking-wide">
-                  {category}
-                </p>
-                <ul className="space-y-3">
-                  {links.map((link) => (
-                    <li key={link.label}>
-                      {link.action === "support" ? (
-                        <button
-                          onClick={() => setSupportOpen(true)}
-                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 text-left cursor-pointer"
-                        >
-                          {link.label}
-                        </button>
-                      ) : link.action === "terms" ? (
-                        <button
-                          onClick={() => { setLegalTab("terms"); setLegalOpen(true); }}
-                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 text-left cursor-pointer"
-                        >
-                          {link.label}
-                        </button>
-                      ) : link.action === "privacy" ? (
-                        <button
-                          onClick={() => { setLegalTab("privacy"); setLegalOpen(true); }}
-                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 text-left cursor-pointer"
-                        >
-                          {link.label}
-                        </button>
-                      ) : (
-                        <Link
-                          href={link.href!}
-                          target={link.href?.startsWith("http") ? "_blank" : undefined}
-                          className="text-sm text-[#a1a1aa] hover:text-[#a78bfa] hover:translate-x-1 transition-all duration-200 inline-block"
-                        >
-                          {link.label}
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Column 1: Quick Links */}
+          <div className="lg:col-span-2">
+            <h4 className="text-sm font-heading font-extrabold tracking-wider uppercase mb-5 text-[#6F42C1]">
+              Quick Links
+            </h4>
+            <ul className="flex flex-col gap-3">
+              {["Home", "Services", "Portfolio", "Pricing", "About", "Contact"].map((link) => (
+                <li key={link}>
+                  <Link
+                    href={`#${link.toLowerCase()}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const id = link === "Portfolio" ? "work" : link.toLowerCase();
+                      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="text-xs text-[#A0AEC0] hover:text-[#6F42C1] transition-colors"
+                  >
+                    {link}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
+
+          {/* Column 2: Services */}
+          <div className="lg:col-span-3">
+            <h4 className="text-sm font-heading font-extrabold tracking-wider uppercase mb-5 text-[#6F42C1]">
+              Services
+            </h4>
+            <ul className="flex flex-col gap-3 text-xs text-[#A0AEC0]">
+              {[
+                "Business Websites",
+                "Portfolio Websites",
+                "Landing Pages",
+                "E-commerce Stores",
+                "Web Applications",
+                "UI/UX Design",
+                "SEO Optimisation",
+              ].map((service) => (
+                <li key={service} className="hover:text-[#6F42C1] transition-colors cursor-pointer" onClick={() => {
+                  document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
+                }}>
+                  {service}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Company / Legal */}
+          <div className="lg:col-span-3">
+            <h4 className="text-sm font-heading font-extrabold tracking-wider uppercase mb-5 text-[#6F42C1]">
+              Company
+            </h4>
+            <ul className="flex flex-col gap-3">
+              <li>
+                <button
+                  onClick={() => setSupportOpen(true)}
+                  className="text-xs text-[#A0AEC0] hover:text-[#6F42C1] transition-colors text-left cursor-pointer"
+                >
+                  Support Portal
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => { setLegalTab("terms"); setLegalOpen(true); }}
+                  className="text-xs text-[#A0AEC0] hover:text-[#6F42C1] transition-colors text-left cursor-pointer"
+                >
+                  Terms of Service
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => { setLegalTab("privacy"); setLegalOpen(true); }}
+                  className="text-xs text-[#A0AEC0] hover:text-[#6F42C1] transition-colors text-left cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
+              </li>
+              <li className="flex items-center gap-2 text-xs text-[#A0AEC0] mt-2 pt-2 border-t border-white/5">
+                <Mail size={12} className="text-[#6F42C1]" />
+                <a href="mailto:hello@blockweb.com" className="hover:text-[#6F42C1]">
+                  hello@blockweb.com
+                </a>
+              </li>
+              <li className="flex items-center gap-2 text-xs text-[#A0AEC0]">
+                <Phone size={12} className="text-[#6F42C1]" />
+                <a href="https://wa.me/919939580371" className="hover:text-[#6F42C1]">
+                  +91 99395 80371
+                </a>
+              </li>
+            </ul>
+          </div>
+
         </div>
 
-        {/* Divider */}
-        <div className="mt-14 border-t border-purple-500/10" />
+        {/* Divider line */}
+        <div className="h-px bg-white/5 w-full my-8" />
 
-        {/* Bottom */}
-        <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-sm text-[#71717a] font-medium">
-            © {new Date().getFullYear()} Block Web. All rights reserved.
+        {/* Bottom footer area */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-white/40">
+            &copy; {new Date().getFullYear()} <strong>Block Web</strong>. All rights reserved.
           </p>
-          <p className="text-xs text-[#52525b] font-medium">
+          <p className="text-[10px] text-white/30 tracking-wider uppercase font-bold font-heading">
             Crafted for absolute digital excellence.
           </p>
         </div>
+
       </div>
 
+      {/* MODALS */}
       <LegalModal open={legalOpen} onClose={() => setLegalOpen(false)} tab={legalTab} />
       <SupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </footer>

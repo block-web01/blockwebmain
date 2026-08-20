@@ -2,500 +2,344 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Code2, Smartphone, Palette, Layout, Server, ArrowUpRight } from "lucide-react";
-import { GlowCard } from "@/components/ui/spotlight-card";
+import { ArrowUpRight, Globe, Layers, Laptop, Shield } from "lucide-react";
 
-const categories = [
-  { label: "AaaS", color: "text-[#10b981]", bg: "bg-[rgba(16,185,129,0.08)]", border: "border-[rgba(16,185,129,0.15)]", shadow: "shadow-[0_0_50px_-12px_rgba(16,185,129,0.3)]" },
-  { label: "Web Dev", color: "text-[#06b6d4]", bg: "bg-[rgba(6,182,212,0.08)]", border: "border-[rgba(6,182,212,0.15)]", shadow: "shadow-[0_0_50px_-12px_rgba(6,182,212,0.3)]" },
-  { label: "SaaS", color: "text-[#8b5cf6]", bg: "bg-[rgba(139,92,246,0.08)]", border: "border-[rgba(139,92,246,0.15)]", shadow: "shadow-[0_0_50px_-12px_rgba(139,92,246,0.3)]" },
-  { label: "AEO/GEO", color: "text-[#ec4899]", bg: "bg-[rgba(236,72,153,0.08)]", border: "border-[rgba(236,72,153,0.15)]", shadow: "shadow-[0_0_50px_-12px_rgba(236,72,153,0.3)]" },
-  { label: "AI Automation", color: "text-[#f59e0b]", bg: "bg-[rgba(245,158,11,0.08)]", border: "border-[rgba(245,158,11,0.15)]", shadow: "shadow-[0_0_50px_-12px_rgba(245,158,11,0.3)]" },
-];
-
-const categoryMap: Record<string, (typeof categories)[number]> = {
-  "AaaS": categories[0],
-  "Web Dev": categories[1],
-  "SaaS": categories[2],
-  "AEO/GEO": categories[3],
-  "AI Automation": categories[4],
-};
-
-const iconMap: Record<string, React.ElementType> = {
-  "AaaS": Server,
-  "Web Dev": Layout,
-  "SaaS": Code2,
-  "AEO/GEO": Palette,
-  "AI Automation": Smartphone,
-};
+// Categories mapping
+const categories = ["All", "Web Applications", "Landing Pages", "E-commerce"];
 
 const projects = [
   {
-    category: "SaaS",
-    title: "NexCart",
-    description:
-      "A scalable e-commerce platform with real-time inventory management, Stripe payments, and an AI-driven product recommendation engine.",
-    tech: ["Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe"],
-    year: "2024",
-    type: "nexcart"
+    title: "VishwasGirdher",
+    category: "Landing Pages",
+    desc: "Personal Portfolio Website",
+    details: "High-performance creative portfolio with smooth transitions, modern typography, and optimized asset delivery.",
+    previewType: "portfolio",
+    color: "#6F42C1",
+    link: "https://vishwasgirdher.com/",
   },
   {
-    category: "SaaS",
-    title: "TaskFlow",
-    description:
-      "A collaborative project management SaaS with live updates, role-based access control, and Slack/GitHub integrations.",
-    tech: ["React", "GraphQL", "Prisma", "WebSockets", "AWS"],
-    year: "2024",
-    type: "taskflow"
+    title: "Kabs Tech",
+    category: "Web Applications",
+    desc: "USA Based SaaS Company Website",
+    details: "SaaS platform dashboard displaying cloud server metrics, real-time firewalls, and active API keys.",
+    previewType: "saas",
+    color: "#3B82F6",
+    link: "https://kabstech.com/",
   },
   {
-    category: "Web Dev",
-    title: "LunaUI",
-    description:
-      "A high-performance marketing site with advanced GSAP animations, 100/100 Lighthouse score, and a headless CMS integration.",
-    tech: ["Next.js", "GSAP", "Tailwind CSS", "Contentful"],
-    year: "2024",
-    type: "lunaui"
+    title: "KB Global Partner",
+    category: "Web Applications",
+    desc: "USA Based SaaS Company Website",
+    details: "Financial automation dashboard tracking multi-currency ledger reconciliations and live capital flows.",
+    previewType: "finance",
+    color: "#10B981",
+    link: "https://kbglobalpartners.com",
   },
   {
-    category: "AaaS",
-    title: "DataPulse API",
-    description:
-      "A high-throughput REST & GraphQL API serving 2M+ daily requests, featuring rate limiting, caching layers, and automated CI/CD.",
-    tech: ["Express", "GraphQL", "MongoDB", "Docker", "GitHub Actions"],
-    year: "2023",
-    type: "datapulse"
+    title: "Recell",
+    category: "Web Applications",
+    desc: "Lithium-ion battery recycling",
+    details: "Circular economy logistics tracker documenting active battery recycling yields, environmental impacts, and global shipping nodes.",
+    previewType: "eco",
+    color: "#059669",
+    link: "https://www.recell.in",
   },
   {
-    category: "AI Automation",
-    title: "FitTrack",
-    description:
-      "A cross-platform fitness app with AI-powered workout plans, wearable sync, and social community challenges.",
-    tech: ["React Native", "Expo", "Firebase", "TensorFlow Lite"],
-    year: "2024",
-    type: "fittrack"
+    title: "NexCart Storefront",
+    category: "E-commerce",
+    desc: "Modern E-commerce Platform",
+    details: "Responsive online storefront displaying popular digital goods, product grid filters, and a slide-out cart sidebar.",
+    previewType: "ecomm",
+    color: "#F7B500",
+    link: "#",
   },
   {
-    category: "AI Automation",
-    title: "PaySwift",
-    description:
-      "A fintech mobile app enabling instant peer-to-peer transfers, multi-currency wallets, and biometric authentication.",
-    tech: ["Flutter", "Dart", "Plaid API", "Firebase"],
-    year: "2024",
-    type: "payswift"
-  },
-  {
-    category: "Web Dev",
-    title: "Aether Design System",
-    description:
-      "A comprehensive design system and component library for a Fortune 500 client, covering 120+ components with accessibility compliance.",
-    tech: ["Figma", "Storybook", "React", "WCAG 2.1"],
-    year: "2023",
-    type: "aether"
-  },
-  {
-    category: "AEO/GEO",
-    title: "Onboard Flow",
-    description:
-      "An analytics dashboard designed for Generative Engine Optimization, tracking Perplexity/ChatGPT citations and optimizing AI-search visibility.",
-    tech: ["Figma", "Framer", "Hotjar", "User Research"],
-    year: "2024",
-    type: "onboard"
+    title: "LunaUI Landing",
+    category: "Landing Pages",
+    desc: "High-performance marketing site",
+    details: "Conversion-optimized product page with premium custom grids, layout systems, and clean feature columns.",
+    previewType: "luna",
+    color: "#EC4899",
+    link: "#",
   },
 ];
 
-/* ── MOCKUP SCREENS FOR EACH PROJECT (Apple Slide Style) ── */
-
-function NexCartMockup() {
-  return (
-    <div className="relative w-full h-[220px] rounded-xl overflow-hidden border border-white/5 bg-[#07040a] shadow-lg flex items-center justify-center select-none pointer-events-none">
-      <img src="/nexcart_preview.png" alt="NexCart Mockup" className="w-full h-full object-cover opacity-90" />
-    </div>
-  );
-}
-
-function TaskFlowMockup() {
-  return (
-    <div className="relative w-full h-[220px] rounded-xl border border-white/5 bg-[#0f0b12] p-4 flex flex-col justify-between font-mono text-[10px] select-none pointer-events-none">
-      <div className="flex items-center justify-between text-white/40 border-b border-white/5 pb-2 mb-2">
-        <span>taskflow-kanban.json</span>
-        <span className="text-purple-400">● Live Updates</span>
-      </div>
-      <div className="grid grid-cols-2 gap-2 flex-1">
-        <div className="bg-[#16121d] rounded-lg p-2.5 border border-white/5">
-          <span className="text-[#a78bfa] block font-bold mb-1.5">Sprint Tasks</span>
-          <div className="space-y-1.5">
-            <div className="bg-[#1f1929] rounded p-1.5 text-white/80">API Webhooks</div>
-            <div className="bg-[#1f1929] rounded p-1.5 text-white/80">CI/CD Deploy</div>
-          </div>
+// Helper to render responsive CSS-based website previews inside laptop screen
+function RenderMockScreen({ type }: { type: string }) {
+  if (type === "portfolio") {
+    return (
+      <div className="w-full h-full bg-[#1c1917] p-3 text-white flex flex-col justify-between font-sans">
+        <div className="flex items-center justify-between border-b border-white/10 pb-1 text-[8px] opacity-70">
+          <span>VISHWAS GIRDHER</span>
+          <span>MENU</span>
         </div>
-        <div className="bg-[#16121d] rounded-lg p-2.5 border border-white/5">
-          <span className="text-[#10b981] block font-bold mb-1.5">Completed</span>
-          <div className="space-y-1.5 opacity-60">
-            <div className="bg-[#1f1929] rounded p-1.5 text-white/80 line-through">Auth System</div>
-            <div className="bg-[#1f1929] rounded p-1.5 text-white/80 line-through">Slack Integration</div>
-          </div>
+        <div className="my-auto flex flex-col gap-1">
+          <div className="text-[12px] font-bold tracking-tight text-[#6F42C1]">CREATIVE</div>
+          <div className="text-[14px] font-black leading-none">DESIGNER</div>
+          <div className="text-[8px] text-[#A0AEC0] mt-1 max-w-[120px] leading-tight">Crafting premium digital experiences worldwide.</div>
+        </div>
+        <div className="flex justify-between items-center text-[7px] text-white/50 pt-1 border-t border-white/5">
+          <span>PORTFOLIO &copy; 2026</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#6F42C1]" />
         </div>
       </div>
-    </div>
-  );
-}
-
-function LunaUIMockup() {
-  return (
-    <div className="relative w-full h-[220px] rounded-xl border border-white/5 bg-[#0f0b12] p-4 flex flex-col justify-between font-mono select-none pointer-events-none">
-      <div className="flex justify-between items-center text-[10px] text-white/40">
-        <span>lunaui-lighthouse.yaml</span>
-        <span className="text-cyan-400">✓ 100/100 Score</span>
-      </div>
-      <div className="flex justify-around items-center flex-1 my-2">
-        {[
-          { l: "Perf", v: 100 },
-          { l: "Acc", v: 100 },
-          { l: "SEO", v: 100 }
-        ].map(m => (
-          <div key={m.l} className="flex flex-col items-center gap-1">
-            <div className="h-12 w-12 rounded-full border-2 border-cyan-500/20 flex items-center justify-center text-xs font-bold text-white shadow-[0_0_15px_rgba(6,182,212,0.25)]">
-              {m.v}
-            </div>
-            <span className="text-[9px] text-[#bdb7c8]">{m.l}</span>
-          </div>
-        ))}
-      </div>
-      <div className="text-[10px] text-white/50 text-center">GSAP Core Animations Active</div>
-    </div>
-  );
-}
-
-function DataPulseMockup() {
-  return (
-    <div className="relative w-full h-[220px] rounded-xl border border-white/5 bg-[#0f0b12] p-4 flex flex-col justify-between font-mono text-[9px] text-white/60 select-none pointer-events-none">
-      <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-2 text-white/40">
-        <span>datapulse-query.graphql</span>
-        <span className="text-emerald-400">2M+ reqs/day</span>
-      </div>
-      <pre className="text-emerald-400 leading-normal flex-1">
-{`query GetAnalytics {
-  pulseAPI {
-    throughput: "24.5k/s"
-    latency: "12ms"
-    caching: "98.4% Hit"
+    );
   }
-}`}
-      </pre>
-      <div className="h-1 bg-white/5 rounded-full overflow-hidden w-full mt-2">
-        <div className="h-full bg-emerald-500 w-[94%]" />
-      </div>
-    </div>
-  );
-}
-
-function FitTrackMockup() {
-  return (
-    <div className="relative w-full h-[220px] rounded-xl border border-white/5 bg-[#0f0b12] p-4 flex flex-col justify-between font-mono text-[10px] select-none pointer-events-none">
-      <div className="flex justify-between items-center text-white/40">
-        <span>fittrack-stats.swift</span>
-        <span className="text-amber-400">Wearable Synced</span>
-      </div>
-      <div className="flex items-center justify-center gap-4 flex-1 my-2">
-        <div className="relative h-16 w-16 flex items-center justify-center">
-          <svg className="h-16 w-16 -rotate-90" viewBox="0 0 36 36">
-            <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(245,158,11,0.1)" strokeWidth="3" />
-            <circle cx="18" cy="18" r="15" fill="none" stroke="#f59e0b" strokeWidth="3" strokeDasharray="75 100" strokeLinecap="round" />
-          </svg>
-          <span className="absolute inset-0 flex flex-col items-center justify-center text-[10px] text-white font-bold">
-            <span>8,420</span>
-            <span className="text-[6px] text-white/60 uppercase">Steps</span>
-          </span>
+  
+  if (type === "saas") {
+    return (
+      <div className="w-full h-full bg-[#0F172A] p-2.5 text-slate-100 flex flex-col font-sans">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-1 text-[7px] text-slate-400">
+          <div className="flex items-center gap-1">
+            <Shield size={6} className="text-blue-400" />
+            <span>KABS CLOUD</span>
+          </div>
+          <span>v2.4 Live</span>
         </div>
-        <div className="space-y-1 text-white/80">
-          <div>🔥 340 kCal burnt</div>
-          <div>⏱ 45 mins active</div>
+        <div className="grid grid-cols-3 gap-1.5 mt-2.5">
+          <div className="bg-slate-800/80 p-1.5 rounded border border-slate-700/50 flex flex-col gap-0.5">
+            <span className="text-[5px] text-slate-400">CPU LOAD</span>
+            <span className="text-[9px] font-bold text-emerald-400">14.8%</span>
+          </div>
+          <div className="bg-slate-800/80 p-1.5 rounded border border-slate-700/50 flex flex-col gap-0.5">
+            <span className="text-[5px] text-slate-400">STORAGE</span>
+            <span className="text-[9px] font-bold text-blue-400">62.1GB</span>
+          </div>
+          <div className="bg-slate-800/80 p-1.5 rounded border border-slate-700/50 flex flex-col gap-0.5">
+            <span className="text-[5px] text-slate-400">STATUS</span>
+            <span className="text-[9px] font-bold text-indigo-400">HEALTHY</span>
+          </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function PaySwiftMockup() {
-  return (
-    <div className="relative w-full h-[220px] rounded-xl border border-white/5 bg-[#0f0b12] p-4 flex items-center justify-center select-none pointer-events-none">
-      <div className="w-[200px] h-[120px] rounded-xl bg-gradient-to-tr from-[#ec4899]/30 via-[#8b5cf6]/20 to-[#06b6d4]/30 border border-white/10 p-3 flex flex-col justify-between text-white font-sans shadow-lg shadow-purple-500/10">
-        <div className="flex justify-between items-start">
-          <div className="text-[10px] font-bold tracking-widest text-white/60">PAYSWIFT</div>
-          <div className="h-4 w-6 bg-white/20 rounded" />
-        </div>
-        <div>
-          <div className="text-[8px] text-white/50 tracking-wider">BALANCE</div>
-          <div className="text-sm font-bold tracking-tight">$12,450.00</div>
-        </div>
-        <div className="flex justify-between text-[7px] text-white/40">
-          <span>KRISHNA SINGH</span>
-          <span>12/28</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AetherMockup() {
-  return (
-    <div className="relative w-full h-[220px] rounded-xl border border-white/5 bg-[#0f0b12] p-4 flex flex-col justify-between font-mono text-[10px]">
-      <div className="flex justify-between items-center text-white/40">
-        <span>aether-components.tsx</span>
-        <span className="text-pink-400">120+ Components</span>
-      </div>
-      <div className="flex flex-col gap-3 flex-1 items-center justify-center">
-        <div className="flex gap-2">
-          <button type="button" className="px-3 py-1.5 rounded-lg bg-pink-500/20 border border-pink-500/40 text-pink-300 font-bold select-none cursor-pointer">Button Primary</button>
-          <button type="button" className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/80 select-none cursor-pointer">Secondary</button>
-        </div>
-        <div className="flex items-center gap-2 w-[180px]">
-          <span className="text-[8px] text-white/40">Slider</span>
-          <div className="h-1 bg-white/10 rounded-full flex-1 overflow-hidden">
-            <div className="h-full bg-pink-500 w-[60%]" />
+        <div className="mt-2.5 bg-slate-900 border border-slate-800 p-1.5 rounded flex-1 flex flex-col justify-between">
+          <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-full w-[70%] bg-blue-500" />
+          </div>
+          <div className="flex items-center justify-between text-[5px] text-slate-500">
+            <span>NETWORK SPEED</span>
+            <span>940 Mbps</span>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-function OnboardMockup() {
+  if (type === "finance") {
+    return (
+      <div className="w-full h-full bg-[#FCFBF9] p-3 text-slate-800 flex flex-col justify-between font-sans">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-1 text-[7px] text-slate-500">
+          <span className="font-bold text-[#10B981]">KB GLOBAL</span>
+          <span>Active Ledger</span>
+        </div>
+        <div className="my-auto flex flex-col gap-1.5">
+          <span className="text-[7px] text-slate-400 uppercase tracking-wider font-semibold">Net Balance</span>
+          <span className="text-[15px] font-bold tracking-tight text-slate-950">$84,920.00</span>
+          <div className="flex gap-2">
+            <span className="text-[6px] px-1 py-0.5 rounded bg-emerald-100 text-emerald-700 font-semibold">+14.2%</span>
+            <span className="text-[6px] text-slate-400 flex items-center">vs last month</span>
+          </div>
+        </div>
+        <div className="flex justify-between items-center text-[6px] text-slate-400 pt-1 border-t border-slate-100">
+          <span>SECURE RECONCILIATION</span>
+          <span className="text-[#10B981] font-bold">● ONLINE</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "eco") {
+    return (
+      <div className="w-full h-full bg-[#052e16] p-3 text-emerald-100 flex flex-col justify-between font-sans">
+        <div className="flex items-center justify-between border-b border-emerald-900 pb-1 text-[7px] text-emerald-400">
+          <span>RECELL RECYCLING</span>
+          <span>Logistics Node</span>
+        </div>
+        <div className="my-auto flex flex-col gap-1">
+          <div className="text-[9px] font-bold text-emerald-300">Sustainability Index</div>
+          <div className="text-[15px] font-black tracking-tight text-white leading-none">98.4 AQI</div>
+          <div className="h-1.5 w-full bg-emerald-950 rounded-full mt-1.5 overflow-hidden">
+            <div className="h-full w-[90%] bg-emerald-400" />
+          </div>
+        </div>
+        <div className="flex justify-between items-center text-[6px] text-emerald-500 pt-1 border-t border-emerald-900">
+          <span>CO2 OFFSET: 24,192 Tons</span>
+          <span>IN &bull; US &bull; UK</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "ecomm") {
+    return (
+      <div className="w-full h-full bg-white p-2.5 text-slate-800 flex flex-col justify-between font-sans">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-1 text-[7px] text-slate-600">
+          <span className="font-bold">NEXSTORE</span>
+          <span>Cart (2)</span>
+        </div>
+        <div className="grid grid-cols-2 gap-2 my-auto">
+          <div className="border border-slate-100 rounded-lg p-1 flex flex-col gap-1 shadow-sm">
+            <div className="w-full aspect-square bg-slate-100 rounded" />
+            <div className="h-1.5 w-[70%] bg-slate-800/80 rounded" />
+            <div className="h-1 w-[40%] bg-slate-400 rounded" />
+          </div>
+          <div className="border border-slate-100 rounded-lg p-1 flex flex-col gap-1 shadow-sm">
+            <div className="w-full aspect-square bg-slate-100 rounded" />
+            <div className="h-1.5 w-[75%] bg-slate-800/80 rounded" />
+            <div className="h-1 w-[50%] bg-slate-400 rounded" />
+          </div>
+        </div>
+        <div className="w-full h-3 bg-[#6F42C1] rounded text-[6px] font-bold text-white flex items-center justify-center">
+          Checkout Now
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback (Luna Landing UI mockup)
   return (
-    <div className="relative w-full h-[220px] rounded-xl border border-white/5 bg-[#0f0b12] p-4 flex flex-col justify-between font-mono text-[10px] select-none pointer-events-none">
-      <div className="flex justify-between items-center text-white/40">
-        <span>onboard-flowchart.mermaid</span>
-        <span className="text-purple-400">UX Redesign</span>
+    <div className="w-full h-full bg-slate-50 p-3 text-slate-800 flex flex-col justify-between font-sans">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-1 text-[7px] text-slate-600">
+        <span className="font-bold tracking-tight text-pink-600">LUNA.UI</span>
+        <span>Components</span>
       </div>
-      <div className="flex items-center justify-center gap-2 flex-1">
-        <div className="px-2 py-1 rounded bg-purple-500/10 border border-purple-500/20 text-white/80">Signup</div>
-        <div className="text-purple-500">→</div>
-        <div className="px-2 py-1 rounded bg-purple-500/10 border border-purple-500/20 text-white/80">Tutorial</div>
-        <div className="text-purple-500">→</div>
-        <div className="px-2 py-1 rounded bg-[#10b981]/20 border border-[#10b981]/40 text-white font-bold">Active User</div>
+      <div className="my-auto flex flex-col gap-1.5">
+        <div className="text-[11px] font-extrabold text-slate-900 leading-none">Designed to Convert.</div>
+        <div className="flex gap-1.5">
+          <div className="h-2 w-7 bg-pink-500 rounded-sm" />
+          <div className="h-2 w-7 bg-slate-200 rounded-sm" />
+        </div>
+        <div className="grid grid-cols-2 gap-1 mt-1">
+          <div className="h-4 bg-white border border-slate-100 rounded shadow-sm" />
+          <div className="h-4 bg-white border border-slate-100 rounded shadow-sm" />
+        </div>
       </div>
-      <div className="text-[9px] text-[#22c55e] text-center font-bold">✓ Drop-off reduced by 47%</div>
+      <div className="text-[6px] text-slate-400">100% Core Web Vital compliance.</div>
     </div>
   );
 }
-
-const mockups: Record<string, React.ElementType> = {
-  nexcart: NexCartMockup,
-  taskflow: TaskFlowMockup,
-  lunaui: LunaUIMockup,
-  datapulse: DataPulseMockup,
-  fittrack: FitTrackMockup,
-  payswift: PaySwiftMockup,
-  aether: AetherMockup,
-  onboard: OnboardMockup
-};
 
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState<string>("SaaS");
-  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number>(0);
+  const [activeCategory, setActiveCategory] = useState("All");
 
-  const categoryProjects = projects.filter((p) => p.category === activeCategory);
-  const activeProject = categoryProjects[selectedProjectIndex] || categoryProjects[0] || projects[0];
-  const activeCat = categoryMap[activeCategory] || categoryMap["SaaS"];
-  const ActiveIcon = iconMap[activeCategory] || iconMap["SaaS"];
-  const ActiveMockup = mockups[activeProject.type] || NexCartMockup;
-
-  const handleCategoryHover = (catLabel: string) => {
-    setActiveCategory(catLabel);
-    setSelectedProjectIndex(0);
-  };
+  const filteredProjects = projects.filter(
+    (proj) => activeCategory === "All" || proj.category === activeCategory
+  );
 
   return (
-    <section id="projects" className="relative py-24 md:py-32 overflow-hidden bg-[#050209]">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07030a] via-[#0a0610] to-[#07030a] opacity-40 pointer-events-none" />
-
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.12)_0%,transparent_70%)] rounded-full" />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+    <section id="work" className="relative py-24 bg-[#F8F6F2]">
+      <div className="section-container">
         
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#8b5cf6]" />
-            <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#8b5cf6] border border-purple-500/20 rounded-full bg-purple-500/5 backdrop-blur-md">
-              Our Work
-            </span>
-            <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#8b5cf6]" />
+        {/* Header Block */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div>
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="inline-block mb-3 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#6F42C1] border border-[#6F42C1]/20 rounded-full bg-[#6F42C1]/5"
+            >
+              The Receipts
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#121212]"
+            >
+              Featured Work
+            </motion.h2>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
-            Completed Projects
-          </h2>
-          <p className="mt-4 text-sm font-light tracking-[0.25em] text-[#bdb7c8]/80 mb-8 lowercase text-center">
-            we complete your business
-          </p>
-        </div>
 
-        {/* Horizontal Category Selector (Pills) */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-16 max-w-4xl mx-auto select-none">
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat.label;
-            return (
+          {/* Filtering Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+            className="flex flex-wrap gap-2"
+          >
+            {categories.map((cat) => (
               <button
-                key={cat.label}
-                onMouseEnter={() => {
-                  if (window.matchMedia("(hover: hover)").matches) {
-                    handleCategoryHover(cat.label);
-                  }
-                }}
-                onClick={() => handleCategoryHover(cat.label)}
-                className={`px-6 py-2.5 rounded-full border text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? "border-[#8b5cf6] text-white bg-purple-500/10 shadow-[0_0_20px_rgba(139,92,246,0.2)]"
-                    : "border-white/10 text-slate-400 bg-[#0c0814]/40 hover:border-purple-500/40 hover:text-white"
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-2.5 text-xs font-bold rounded-full border transition-all duration-300 cursor-pointer ${
+                  activeCategory === cat
+                    ? "bg-[#6F42C1] text-white border-[#6F42C1] shadow-[0_4px_14px_rgba(111,66,193,0.25)]"
+                    : "bg-white text-[#121212] border-[#E8E8E8] hover:border-[#6F42C1] hover:text-[#6F42C1]"
                 }`}
               >
-                {cat.label}
+                {cat}
               </button>
-            );
-          })}
+            ))}
+          </motion.div>
         </div>
 
-        {/* Full-width Keynote Detail Card */}
-        <div className="w-full max-w-5xl mx-auto">
-          <div className="group relative h-full transition-all duration-500">
-            {/* No ambient outer glows or shadows to keep visual focus clean */}
-            <GlowCard
-              glowColor={
-                activeCategory === "SaaS" ? "purple" :
-                activeCategory === "Web Dev" ? "blue" :
-                activeCategory === "AaaS" ? "green" :
-                activeCategory === "AEO/GEO" ? "red" : "orange"
-              }
-              customSize
-              className="w-full relative transition-all duration-300 group-hover:border-[rgba(255,255,255,0.1)] p-0"
-            >
-              {/* Permanent category border that brightens on hover */}
-              <div className={`absolute inset-0 rounded-2xl border ${activeCat.border} opacity-40 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none z-20`} />
+        {/* Portfolio Asymmetric Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, idx) => (
+              <motion.div
+                layout
+                key={project.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="group flex flex-col justify-between"
+              >
+                <div>
+                  {/* LAPTOP SCREEN MOCKUP */}
+                  <div className="relative w-full aspect-[16/10] bg-[#1a1a1a] rounded-[18px] p-2.5 sm:p-3.5 shadow-[0_12px_36px_rgba(0,0,0,0.04)] border border-[#E8E8E8] overflow-hidden mb-6 z-10">
+                    
+                    {/* Screen Outer frame */}
+                    <div className="relative w-full h-full bg-[#fcfbfa] rounded-[10px] overflow-hidden border border-[#222]">
+                      
+                      {/* Browser header bar */}
+                      <div className="w-full h-4 sm:h-5 bg-[#E8E8E8] px-2 flex items-center gap-1 border-b border-[#dcdcdc] select-none">
+                        <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                        <div className="h-2.5 w-24 bg-white rounded-sm mx-auto flex items-center justify-center text-[5px] text-slate-400">
+                          {project.title.toLowerCase()}.com
+                        </div>
+                      </div>
 
-              <div className="flex flex-col md:flex-row items-stretch justify-between h-full w-full min-h-[400px] overflow-hidden">
-                
-                {/* Details Panel (Left Inside Card) - STABLE LAYOUT */}
-                <div className="flex flex-col justify-between p-8 sm:p-10 flex-1 z-10 w-full md:w-[52%]">
-                  <div>
-                    {/* Top layout - STABLE */}
-                    <div className="flex items-center justify-between mb-6">
-                      <span className={`px-2.5 py-0.5 text-[9px] font-bold tracking-wider rounded border ${activeCat.color} ${activeCat.bg} ${activeCat.border}`}>
-                        {activeProject.category.toUpperCase()}
-                      </span>
-                      <ActiveIcon className={`h-5 w-5 ${activeCat.color}`} strokeWidth={1.8} />
+                      {/* Mock Screen Content (Zooming component) */}
+                      <div className="w-full h-[calc(100%-16px)] sm:h-[calc(100%-20px)] relative overflow-hidden transition-transform duration-500 group-hover:scale-[1.04]">
+                        <RenderMockScreen type={project.previewType} />
+                      </div>
                     </div>
 
-                    {/* If category has multiple projects, show a sub-navigator inside the card - STABLE */}
-                    {categoryProjects.length > 1 && (
-                      <div className="flex gap-1.5 mb-6 p-1 bg-white/5 border border-white/5 rounded-xl max-w-fit relative z-30">
-                        {categoryProjects.map((p, idx) => {
-                          const isSubActive = selectedProjectIndex === idx;
-                          return (
-                            <button
-                              key={p.title}
-                              onClick={() => setSelectedProjectIndex(idx)}
-                              onMouseEnter={() => {
-                                if (window.matchMedia("(hover: hover)").matches) {
-                                  setSelectedProjectIndex(idx);
-                                }
-                              }}
-                              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 cursor-pointer ${
-                                isSubActive
-                                  ? "bg-purple-600 text-white shadow-md shadow-purple-500/10"
-                                  : "text-slate-400 hover:text-white"
-                              }`}
-                            >
-                              {p.title}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* ANIMATED AREA: Title & Description */}
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`${activeCategory}-${selectedProjectIndex}-text`}
-                        initial={{ opacity: 0, y: 8, filter: "blur(2px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, y: -8, filter: "blur(2px)" }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                      >
-                        <h3 className="text-3xl font-black text-white tracking-tight leading-tight">
-                          {activeProject.title}
-                        </h3>
-                        <p className="mt-4 text-sm text-[#bdb7c8] leading-relaxed max-w-md">
-                          {activeProject.description}
-                        </p>
-                      </motion.div>
-                    </AnimatePresence>
+                    {/* Laptop Bottom Lid Edge */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[90%] w-[105%] h-2.5 bg-[#d2d2d2] rounded-b-[4px] border-t border-white/20 z-20" />
                   </div>
 
-                  {/* Tech stack badges */}
-                  <div className="mt-8 space-y-4">
-                    <div className="h-px bg-white/5 w-full" />
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`${activeCategory}-${selectedProjectIndex}-tech`}
-                        initial={{ opacity: 0, y: 4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        transition={{ duration: 0.2 }}
-                        className="flex justify-between items-center w-full gap-4"
-                      >
-                        <div className="flex flex-wrap gap-1.5 max-w-[80%]">
-                          {activeProject.tech.map((t) => (
-                            <span key={t} className="px-2 py-0.5 text-[9px] bg-white/5 border border-white/5 rounded text-[#8e8e93] group-hover:text-white group-hover:bg-purple-500/10 group-hover:border-purple-500/20 transition-all duration-300">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                        <span className="text-xs text-slate-500 font-mono">{activeProject.year}</span>
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </div>
-
-                {/* Live Visual Widget Mockup Panel (Right Inside Card) - ANIMATED IN-PLACE */}
-                <div className="relative w-full md:w-[48%] bg-[#08050e] border-l border-t md:border-t-0 border-white/5 p-6 flex items-center justify-center min-h-[280px] md:min-h-0 overflow-hidden">
+                  {/* Description Info */}
+                  <span className="text-[11px] font-bold text-[#6F42C1] uppercase tracking-widest block mb-2">
+                    {project.category}
+                  </span>
                   
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={`${activeCategory}-${selectedProjectIndex}-mockup`}
-                      initial={{ opacity: 0, scale: 0.96, filter: "blur(4px)" }}
-                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, scale: 0.96, filter: "blur(4px)" }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="w-full flex items-center justify-center z-10"
-                    >
-                      <ActiveMockup />
-                    </motion.div>
-                  </AnimatePresence>
-
-                  {/* Sparkly category ambient spot glow inside widget panel */}
-                  <div className={`absolute -inset-4 rounded-r-2xl bg-[radial-gradient(circle_at_center,${activeCat.bg}_0%,transparent_70%)] opacity-30 group-hover:opacity-60 transition-opacity duration-500 -z-10 pointer-events-none`} />
+                  <div className="flex items-center gap-2 group-hover:text-[#6F42C1] transition-colors mb-2">
+                    <h3 className="text-xl font-heading font-extrabold text-[#121212] tracking-tight">
+                      {project.title}
+                    </h3>
+                    <ArrowUpRight size={16} className="text-[#555555] group-hover:text-[#6F42C1] transition-transform duration-300 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                  
+                  <p className="text-xs text-[#555555] font-bold mb-3 italic">
+                    {project.desc}
+                  </p>
+                  
+                  <p className="text-sm text-[#555555] leading-relaxed mb-6">
+                    {project.details}
+                  </p>
                 </div>
-
-              </div>
-
-            </GlowCard>
-          </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
-        {/* Bottom CTA */}
-        <div className="mt-16 text-center">
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold text-white bg-purple-600 hover:bg-purple-500 border border-purple-500/30 rounded-xl transition-all duration-300 shadow-[0_4px_20px_rgba(139,92,246,0.15)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.35)] hover:-translate-y-0.5 group"
-          >
-            Start Your Project
-            <ArrowUpRight className="h-4.5 w-4.5 transition-transform duration-300 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
-        </div>
       </div>
     </section>
   );

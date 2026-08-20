@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import "lenis/dist/lenis.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 
-const inter = Inter({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
-  title: "BW | Designed with Intelligence. Executed with Smartness.",
+  title: "Block Web | Premium Web Development & UI/UX Design Agency",
   description:
-    "We are a startup technology company delivering high-efficiency, scalable digital solutions with precision engineering and intelligent design.",
+    "Block Web is a premium web development and UI/UX design agency. We build fast, responsive, and SEO-optimized websites, portfolios, and e-commerce applications designed to help businesses grow.",
 };
 
 import { Providers } from "@/components/Providers";
@@ -31,12 +25,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased bg-[#07030a]`}
+        className="antialiased"
       >
         <Providers session={session}>
           <SmoothScrollProvider>
             {/* 🔥 MAIN BACKGROUND WRAPPER */}
-        <div className="relative min-h-screen bg-[#07030a]">
+        <div className="relative min-h-screen">
           {children}
         </div>
           </SmoothScrollProvider>
